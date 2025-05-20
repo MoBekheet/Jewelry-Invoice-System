@@ -1,0 +1,177 @@
+/* 
+ * Precise positioning for the print layout
+ * All measurements are in millimeters to match the custom paper size (160mm × 200mm)
+ */
+
+@page {
+  size: 160mm 200mm;
+  margin: 0;
+}
+
+/* Set exact positions for fields to match pre-printed form */
+
+/* Date Fields Styles */
+
+.date-day,
+.date-month,
+.date-year {
+  text-align: center;
+  font-size: 16px;
+  direction: rtl;
+  position: absolute;
+  font-weight: 600;
+}
+
+.date-day {
+  position: absolute;
+  right: 26mm;
+  width: 10mm;
+}
+
+.date-month {
+  position: absolute;
+  right: 39mm;
+  width: 10mm;
+}
+
+.date-year {
+  position: absolute;
+  right: 54mm;
+  width: 10mm;
+}
+
+.text-position-date {
+  top: 51.5mm;
+  position: absolute;
+}
+
+.text-position-customer-name {
+  right: 40.5mm;
+  top: 58.5mm;
+  width: 47mm;
+  font-size: 16px;
+  direction: rtl;
+  position: absolute;
+  font-weight: 600;
+}
+
+.text-position-mobile-number {
+  right: 96mm;
+  top: 58.5mm;
+  font-size: 16px;
+  direction: rtl;
+  position: absolute;
+  width: 32mm;
+  font-weight: 600;
+}
+
+.text-position-total {
+  right: 13.5mm;
+  top: 167.5mm;
+  font-size: 16px;
+  font-weight: bold;
+  direction: rtl;
+  position: absolute;
+}
+
+/* Item row positioning */
+.item-row {
+  position: absolute;
+  direction: rtl;
+  width: 100%;
+}
+
+.item-cell {
+  position: absolute;
+  text-align: center;
+  font-weight: 600;
+}
+
+.item-description {
+  right: 100mm;
+  width: 52mm;
+}
+
+.item-price {
+  right: 75.2mm;
+  width: 15mm;
+}
+
+.item-karat {
+  right: 63mm;
+  width: 10.5mm;
+}
+
+.item-weight {
+  right: 42mm;
+  width: 14.2mm;
+}
+
+.item-value {
+  right: 12mm;
+  width: 23.5mm;
+}
+
+.item-weight-pound {
+  right: 47mm;
+  width: 16mm;
+}
+
+.item-weight-piaster {
+  right: 36mm;
+  width: 11mm;
+}
+
+.item-price-pound {
+  right: 84mm;
+  width: 16mm;
+}
+
+.item-price-piaster {
+  right: 74mm;
+  width: 10mm;
+}
+
+.item-value-pound {
+  right: 18mm;
+  width: 7mm;
+}
+
+.item-value-piaster {
+  right: 11mm;
+  width: 7mm;
+}
+
+/* Preview styling - only used on screen, not when printing */
+.preview-container {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  position: relative;
+  width: 160mm;
+  height: 200mm;
+}
+
+.invoice-preview {
+  position: relative;
+  background-color: white;
+  margin: 0 auto;
+  font-family: 'Noto Kufi Arabic', Arial, sans-serif;
+  width: 160mm;
+  height: 200mm;
+}
+
+@media print {
+  body {
+    width: 160mm;
+    height: 200mm;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .invoice-preview {
+    width: 160mm;
+    height: 200mm;
+    margin: 0;
+    padding: 0;
+  }
+}
