@@ -108,6 +108,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData, isPrintMod
             {invoiceData.items.map((item, index) => {
               // Convert Arabic numbers to English before calculations
               const weightGrams = Number(toEnglishNumerals(item.weight.grams.toString()));
+              const weightMilligrams = Number(toEnglishNumerals(item.weight.milligrams?.toString() || '0'));
               const pricePound = Number(toEnglishNumerals(item.price.pound.toString()));
               const pricePiaster = item.price.piaster ? Number(toEnglishNumerals(item.price.piaster.toString())) : 0;
               const karat = Number(toEnglishNumerals(item.karat.toString()));
@@ -124,7 +125,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData, isPrintMod
                   
                   {/* Weight in Milligrams */}
                   <td style={{ width: '1.6cm', textAlign: 'center', fontSize: '16px', fontWeight: 600, verticalAlign: 'middle' }}>
-                    {toArabicNumerals(Math.floor((weightGrams % 1) * 1000))}
+                    {weightMilligrams > 0 ? toArabicNumerals(weightMilligrams) : '00'}
                   </td>
 
                   {/* Weight in Grams */}
@@ -171,7 +172,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData, isPrintMod
             {/* Total Row */}
             <tr style={{ height: '0.65cm' }}>
               <td style={{ width: '2.0cm', textAlign: 'center', fontSize: '16px', fontWeight: 600, verticalAlign: 'middle' }}>
-                {toArabicNumerals(Math.floor(totalAmount))}
+                {totalAmount > 0 ? toArabicNumerals(Math.floor(totalAmount)) : '---'}
               </td>
               <td style={{ width: '1.6cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
               <td style={{ width: '1.6cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
