@@ -1,15 +1,18 @@
-.app-container {
-  min-height: 100vh;
-  padding: 2rem;
-  background-color: #f3f4f6;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-@media print {
-  .app-container {
-    padding: 0;
-    background: none;
-  }
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
 }
