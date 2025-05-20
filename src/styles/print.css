@@ -46,7 +46,6 @@
   right: 2.6cm;
   display: flex;
   gap: 0.3cm;
-  direction: rtl;
 }
 
 .text-position-customer-name {
@@ -55,7 +54,6 @@
   top: 5.85cm;
   width: 4.7cm;
   font-size: 16px;
-  direction: rtl;
   font-weight: 600;
 }
 
@@ -65,7 +63,6 @@
   top: 5.85cm;
   width: 3.2cm;
   font-size: 16px;
-  direction: rtl;
   font-weight: 600;
 }
 
@@ -75,7 +72,6 @@
   top: 16.75cm;
   width: 3.2cm;
   font-size: 16px;
-  direction: rtl;
   font-weight: bold;
 }
 
@@ -84,7 +80,6 @@
 .date-month,
 .date-year {
   font-size: 16px;
-  direction: rtl;
   font-weight: 600;
   width: 1cm;
   text-align: center;
@@ -96,7 +91,6 @@
   top: 8.45cm;
   right: 1.2cm;
   width: 14cm;
-  direction: rtl;
 }
 
 .item-row {
@@ -105,7 +99,6 @@
   display: grid;
   grid-template-columns: 5.2cm 1.5cm 1.05cm 1.42cm 2.35cm;
   gap: 0.2cm;
-  direction: rtl;
 }
 
 .item-cell {
