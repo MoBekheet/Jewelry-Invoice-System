@@ -5,19 +5,32 @@ import { InvoiceItem } from '../types/invoice';
  */
 export const calculateRowTotal = (item: InvoiceItem): number => {
   // Convert string inputs to numbers
-  const pricePound = parseFloat(item.price.pound) || 0;
-  const pricePiaster = parseFloat(item.price.piaster) || 0;
-  const weightGrams = parseFloat(item.weight.grams) || 0;
-  const weightMilligrams = parseFloat(item.weight.milligrams) || 0;
+  const weightGrams = parseFloat(item.weight.grams.replace(/[٠-٩]/g, (d) => 
+    String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+  )) || 0;
+  
+  const weightMilligrams = parseFloat(item.weight.milligrams.replace(/[٠-٩]/g, (d) => 
+    String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+  )) || 0;
+  
+  const pricePound = parseFloat(item.price.pound.replace(/[٠-٩]/g, (d) => 
+    String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+  )) || 0;
+  
+  const pricePiaster = parseFloat(item.price.piaster.replace(/[٠-٩]/g, (d) => 
+    String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+  )) || 0;
+
+  // Convert milligrams to grams (1000 mg = 1 g)
+  const totalWeight = weightGrams + (weightMilligrams / 1000);
   
   // Convert piasters to pounds (100 piasters = 1 pound)
-  const price = pricePound + (pricePiaster / 100);
+  const totalPrice = pricePound + (pricePiaster / 100);
   
-  // Convert milligrams to grams (1000 mg = 1 g)
-  const weight = weightGrams + (weightMilligrams / 1000);
+  // Calculate total (weight * price)
+  const total = totalWeight * totalPrice;
   
-  // Calculate total (price * weight) and round to 2 decimal places
-  const total = price * weight;
+  // Round to 2 decimal places
   return Math.round(total * 100) / 100;
 };
 

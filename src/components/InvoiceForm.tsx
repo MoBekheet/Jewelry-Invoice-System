@@ -39,8 +39,65 @@ const InvoiceForm: React.FC = () => {
     if (savedInvoices.length > 0) {
       const lastInvoice = loadInvoice(savedInvoices[savedInvoices.length - 1]);
       if (lastInvoice) {
+        // Format all numeric values in the items
+        const formattedItems = lastInvoice.items.map(item => {
+          // Convert Arabic numerals to English for calculations
+          const englishGrams = item.weight.grams.replace(/[٠-٩]/g, (d) => 
+            String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+          );
+          const englishMilligrams = item.weight.milligrams.replace(/[٠-٩]/g, (d) => 
+            String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+          );
+          const englishKarat = item.karat.replace(/[٠-٩]/g, (d) => 
+            String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+          );
+          const englishPricePound = item.price.pound.replace(/[٠-٩]/g, (d) => 
+            String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+          );
+          const englishPricePiaster = item.price.piaster.replace(/[٠-٩]/g, (d) => 
+            String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+          );
+
+          // Create a temporary item with English numerals for calculation
+          const tempItem = {
+            ...item,
+            weight: {
+              grams: englishGrams,
+              milligrams: englishMilligrams
+            },
+            karat: englishKarat,
+            price: {
+              pound: englishPricePound,
+              piaster: englishPricePiaster
+            }
+          };
+
+          // Calculate total using the temporary item
+          const total = calculateRowTotal(tempItem);
+
+          // Return the formatted item with the calculated total
+          return {
+            ...item,
+            weight: {
+              grams: formatInputValue(item.weight.grams, false),
+              milligrams: formatInputValue(item.weight.milligrams, true)
+            },
+            karat: formatInputValue(item.karat, false),
+            price: {
+              pound: formatInputValue(item.price.pound, false),
+              piaster: formatInputValue(item.price.piaster, true)
+            },
+            total
+          };
+        });
+
+        // Calculate the total amount for the invoice
+        const totalAmount = calculateInvoiceTotal(formattedItems);
+
         setInvoiceData({
           ...lastInvoice,
+          items: formattedItems,
+          totalAmount,
           mobileNumber: toArabicNumerals(lastInvoice.mobileNumber)
         });
       }
@@ -93,33 +150,19 @@ const InvoiceForm: React.FC = () => {
   };
 
   const handleItemChange = (id: string, field: string, value: string) => {
-    const updatedItems = invoiceData.items.map(item => {
-      if (item.id === id) {
-        if (field.includes('.')) {
-          const [parent, child] = field.split('.');
-          return {
-            ...item,
-            [parent]: {
-              ...item[parent as keyof InvoiceItem] as Record<string, any>,
-              [child]: value
-            }
-          };
+    if (field === 'description') {
+      const updatedItems = invoiceData.items.map(item => {
+        if (item.id === id) {
+          return { ...item, description: value };
         }
-        return { ...item, [field]: value };
-      }
-      return item;
-    });
+        return item;
+      });
 
-    const itemsWithTotals = updatedItems.map(item => ({
-      ...item,
-      total: calculateRowTotal(item)
-    }));
-
-    setInvoiceData({
-      ...invoiceData,
-      items: itemsWithTotals,
-      totalAmount: calculateInvoiceTotal(itemsWithTotals)
-    });
+      setInvoiceData({
+        ...invoiceData,
+        items: updatedItems
+      });
+    }
   };
 
   // Check if any row is incomplete
@@ -334,13 +377,65 @@ const InvoiceForm: React.FC = () => {
     const isDecimalField = field.includes('piaster') || field.includes('milligrams');
     const maxLength = isDecimalField ? 2 : 6;
     
-    const cleanValue = value.replace(/,/g, '');
-    const englishValue = cleanValue.replace(/[٠-٩]/g, (d) => 
+    // Convert Arabic numerals to English
+    const englishValue = value.replace(/[٠-٩]/g, (d) => 
       String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
     );
-    const validatedValue = validateNumericInput(englishValue).slice(0, maxLength);
     
-    handleItemChange(id, field, validatedValue);
+    // For decimal fields, ensure we only have numbers and handle leading zeros
+    let validatedValue = englishValue;
+    if (isDecimalField) {
+      validatedValue = englishValue.replace(/[^\d]/g, '');
+      // Remove leading zeros
+      validatedValue = validatedValue.replace(/^0+/, '');
+      // If empty after removing leading zeros, keep it empty
+      if (validatedValue === '') {
+        validatedValue = '';
+      }
+    } else {
+      validatedValue = validateNumericInput(englishValue);
+    }
+    
+    // Apply max length
+    validatedValue = validatedValue.slice(0, maxLength);
+    
+    // Update the item with the new value
+    const updatedItems = invoiceData.items.map(item => {
+      if (item.id === id) {
+        let updatedItem = { ...item };
+        
+        if (field.includes('.')) {
+          const [parent, child] = field.split('.');
+          updatedItem = {
+            ...item,
+            [parent]: {
+              ...item[parent as keyof InvoiceItem] as Record<string, any>,
+              [child]: validatedValue
+            }
+          };
+        } else {
+          updatedItem = { ...item, [field]: validatedValue };
+        }
+
+        // Calculate total for this item
+        const total = calculateRowTotal(updatedItem);
+
+        return {
+          ...updatedItem,
+          total
+        };
+      }
+      return item;
+    });
+
+    // Calculate the total amount for the invoice
+    const totalAmount = calculateInvoiceTotal(updatedItems);
+
+    setInvoiceData({
+      ...invoiceData,
+      items: updatedItems,
+      totalAmount
+    });
   };
 
   // Function to validate numeric input
