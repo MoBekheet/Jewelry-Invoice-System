@@ -42,52 +42,69 @@
 /* Text positioning for invoice fields */
 .text-position-date {
   position: absolute;
-  top: 1.5cm;
-  right: 1cm;
-  width: 4.5cm;
-  height: 1.2cm;
-  direction: rtl;
+  top: 5.15cm;
+  right: 2.6cm;
   display: flex;
-  align-items: center;
-}
-
-.text-position-mobile-number {
-  position: absolute;
-  top: 1.5cm;
-  right: 9.5cm;
-  width: 5.5cm;
-  height: 1.2cm;
+  gap: 0.3cm;
   direction: rtl;
-  display: flex;
-  align-items: center;
 }
 
 .text-position-customer-name {
   position: absolute;
-  top: 3.2cm;
-  right: 1cm;
-  width: 8.5cm;
-  height: 1.2cm;
+  right: 4.05cm;
+  top: 5.85cm;
+  width: 4.7cm;
+  font-size: 16px;
   direction: rtl;
-  display: flex;
-  align-items: center;
+  font-weight: 600;
+}
+
+.text-position-mobile-number {
+  position: absolute;
+  right: 9.6cm;
+  top: 5.85cm;
+  width: 3.2cm;
+  font-size: 16px;
+  direction: rtl;
+  font-weight: 600;
+}
+
+.text-position-total {
+  position: absolute;
+  right: 1.35cm;
+  top: 16.75cm;
+  width: 3.2cm;
+  font-size: 16px;
+  direction: rtl;
+  font-weight: bold;
+}
+
+/* Date fields positioning */
+.date-day,
+.date-month,
+.date-year {
+  font-size: 16px;
+  direction: rtl;
+  font-weight: 600;
+  width: 1cm;
+  text-align: center;
 }
 
 /* Items table positioning */
 .items-table {
   position: absolute;
-  top: 5cm;
-  right: 0.25cm;
-  width: 15.5cm;
+  top: 8.45cm;
+  right: 1.2cm;
+  width: 14cm;
   direction: rtl;
 }
 
 .item-row {
   position: relative;
-  height: 1.1cm;
+  height: 0.7cm;
   display: grid;
-  grid-template-columns: 3.5cm 1.8cm 1.2cm 1.5cm 2.2cm 5.3cm;
-  gap: 0;
+  grid-template-columns: 5.2cm 1.5cm 1.05cm 1.42cm 2.35cm;
+  gap: 0.2cm;
   direction: rtl;
 }
 
@@ -96,7 +113,7 @@
   font-weight: 600;
   display: flex;
   align-items: center;
-  padding: 0 0.2cm;
+  justify-content: center;
 }
 
 .item-description {
@@ -107,31 +124,14 @@
 .item-karat,
 .item-weight,
 .item-value {
-  justify-content: left;
+  text-align: center;
 }
 
-/* Total row positioning */
-.total-row {
-  position: absolute;
-  bottom: 1.5cm;
-  right: 0.25cm;
-  width: 15.5cm;
-  height: 1.1cm;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 0.2cm;
-  direction: rtl;
-}
-
-.total-label {
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.total-value {
-  font-weight: bold;
-  font-size: 14px;
-  text-align: left;
-  width: 5.3cm;
+/* Print preview container */
+.preview-container {
+  width: 160mm;
+  height: 200mm;
+  position: relative;
+  margin: 0 auto;
+  background-color: white;
 }
