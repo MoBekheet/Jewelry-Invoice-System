@@ -1,77 +1,121 @@
-/* 
- * Precise positioning for the print layout
- * All measurements are in millimeters to match the custom paper size (160mm × 200mm)
- */
+/* Print-specific styles */
+@media print {
+  @page {
+    size: 160mm 200mm;
+    margin: 0;
+  }
 
-@page {
-  size: 160mm 200mm;
-  margin: 0;
+  body { 
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .print-content {
+    display: block !important;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 160mm;
+    height: 200mm;
+    overflow: hidden;
+    page-break-after: avoid !important;
+    page-break-before: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: none !important;
+    color: black !important;
+  }
+
+  html {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  @page :first {
+    margin: 0;
+  }
+
+  @page :left {
+    margin: 0;
+  }
+
+  @page :right {
+    margin: 0;
+  }
 }
 
-/* Set exact positions for fields to match pre-printed form */
-
-/* Date Fields Styles */
-
-.date-day,
-.date-month,
-.date-year {
-  text-align: center;
-  font-size: 16px;
-  direction: rtl;
-  position: absolute;
-  font-weight: 600;
+/* Hide print content by default */
+.print-content {
+  display: none;
 }
 
-.date-day {
-  position: absolute;
-  right: 26mm;
-  width: 10mm;
-}
-
-.date-month {
-  position: absolute;
-  right: 39mm;
-  width: 10mm;
-}
-
-.date-year {
-  position: absolute;
-  right: 54mm;
-  width: 10mm;
-}
-
+/* Text positioning for invoice fields */
 .text-position-date {
-  top: 51.5mm;
   position: absolute;
+  top: 51.5mm;
 }
 
 .text-position-customer-name {
+  position: absolute;
   right: 40.5mm;
   top: 58.5mm;
   width: 47mm;
   font-size: 16px;
   direction: rtl;
-  position: absolute;
   font-weight: 600;
 }
 
 .text-position-mobile-number {
+  position: absolute;
   right: 96mm;
   top: 58.5mm;
+  width: 32mm;
   font-size: 16px;
   direction: rtl;
-  position: absolute;
-  width: 32mm;
   font-weight: 600;
 }
 
 .text-position-total {
+  position: absolute;
   right: 13.5mm;
   top: 167.5mm;
+  width: 32mm;
   font-size: 16px;
-  font-weight: bold;
   direction: rtl;
+  font-weight: bold;
+}
+
+/* Date fields positioning */
+.date-day,
+.date-month,
+.date-year {
   position: absolute;
+  text-align: center;
+  font-size: 16px;
+  direction: rtl;
+  font-weight: 600;
+}
+
+.date-day {
+  right: 26mm;
+  width: 10mm;
+}
+
+.date-month {
+  right: 39mm;
+  width: 10mm;
+}
+
+.date-year {
+  right: 54mm;
+  width: 10mm;
 }
 
 /* Item row positioning */
@@ -140,38 +184,4 @@
 .item-value-piaster {
   right: 11mm;
   width: 7mm;
-}
-
-/* Preview styling - only used on screen, not when printing */
-.preview-container {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 0 auto;
-  position: relative;
-  width: 160mm;
-  height: 200mm;
-}
-
-.invoice-preview {
-  position: relative;
-  background-color: white;
-  margin: 0 auto;
-  font-family: 'Noto Kufi Arabic', Arial, sans-serif;
-  width: 160mm;
-  height: 200mm;
-}
-
-@media print {
-  body {
-    width: 160mm;
-    height: 200mm;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .invoice-preview {
-    width: 160mm;
-    height: 200mm;
-    margin: 0;
-    padding: 0;
-  }
 }
