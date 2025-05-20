@@ -562,13 +562,18 @@
   background-color: #991b1b;
 }
 
-/* Print Instructions */
+/* Print Instructions Section */
+.print-instructions-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #374151;
+}
+
 .print-instructions {
   background-color: #1f2937;
   border: 1px solid #374151;
   border-radius: 0.5rem;
   padding: 1rem;
-  margin-bottom: 1.5rem;
   color: #e5e7eb;
 }
 

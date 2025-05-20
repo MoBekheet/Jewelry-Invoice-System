@@ -30,11 +30,8 @@ const InvoiceForm: React.FC = () => {
     if (savedInvoices.length > 0) {
       const lastInvoice = loadInvoice(savedInvoices[savedInvoices.length - 1]);
       if (lastInvoice) {
-        // Convert date to Arabic numerals
-        const arabicDate = toArabicNumerals(lastInvoice.date);
         setInvoiceData({
           ...lastInvoice,
-          date: arabicDate,
           mobileNumber: toArabicNumerals(lastInvoice.mobileNumber)
         });
       }
@@ -74,13 +71,6 @@ const InvoiceForm: React.FC = () => {
       setInvoiceData({
         ...invoiceData,
         [name]: numericValue,
-      });
-    } else if (name === 'date') {
-      // Convert date to Arabic numerals
-      const arabicDate = toArabicNumerals(value);
-      setInvoiceData({
-        ...invoiceData,
-        [name]: arabicDate,
       });
     } else {
       setInvoiceData({
@@ -276,6 +266,38 @@ const InvoiceForm: React.FC = () => {
     setShowPreview(!showPreview);
   };
 
+  const handleDeleteInvoice = () => {
+    if (confirm('هل أنت متأكد من حذف الفاتورة الحالية؟')) {
+      const key = `invoice-${invoiceData.mobileNumber || Date.now()}`;
+      deleteInvoice(key);
+      setShowValidation(false); // Reset validation state
+      setInvoiceData({
+        mobileNumber: '',
+        date: new Date().toISOString().slice(0, 10),
+        customerName: '',
+        items: [createEmptyItem()],
+        totalAmount: 0,
+      });
+      alert('تم حذف الفاتورة بنجاح');
+    }
+  };
+
+  // Check if invoice has any data
+  const hasInvoiceData = () => {
+    return invoiceData.mobileNumber.trim() !== '' || 
+           invoiceData.customerName.trim() !== '' ||
+           invoiceData.items.some(item => 
+             item.description.trim() !== '' ||
+             item.weight.grams.trim() !== '' ||
+             item.weight.milligrams.trim() !== '' ||
+             item.karat.trim() !== '' ||
+             item.value.pound.trim() !== '' ||
+             item.value.piaster.trim() !== '' ||
+             item.price.pound.trim() !== '' ||
+             item.price.piaster.trim() !== ''
+           );
+  };
+
   // Function to format number with thousand separators
   const formatNumber = (value: string | number): string => {
     if (!value) return '';
@@ -322,7 +344,6 @@ const InvoiceForm: React.FC = () => {
           piaster: item.price.piaster
         },
         total: item.total,
-        // Add formatted values for display
         formattedWeight: {
           grams: item.weight.grams,
           milligrams: item.weight.milligrams
@@ -364,38 +385,6 @@ const InvoiceForm: React.FC = () => {
   const validateNumericInput = (value: string): string => {
     // Remove any non-numeric characters and commas
     return value.replace(/[^\d]/g, '');
-  };
-
-  const handleDeleteInvoice = () => {
-    if (confirm('هل أنت متأكد من حذف الفاتورة الحالية؟')) {
-      const key = `invoice-${invoiceData.mobileNumber || Date.now()}`;
-      deleteInvoice(key);
-      setShowValidation(false); // Reset validation state
-      setInvoiceData({
-        mobileNumber: '',
-        date: new Date().toISOString().slice(0, 10),
-        customerName: '',
-        items: [createEmptyItem()],
-        totalAmount: 0,
-      });
-      alert('تم حذف الفاتورة بنجاح');
-    }
-  };
-
-  // Check if invoice has any data
-  const hasInvoiceData = () => {
-    return invoiceData.mobileNumber.trim() !== '' || 
-           invoiceData.customerName.trim() !== '' ||
-           invoiceData.items.some(item => 
-             item.description.trim() !== '' ||
-             item.weight.grams.trim() !== '' ||
-             item.weight.milligrams.trim() !== '' ||
-             item.karat.trim() !== '' ||
-             item.value.pound.trim() !== '' ||
-             item.value.piaster.trim() !== '' ||
-             item.price.pound.trim() !== '' ||
-             item.price.piaster.trim() !== ''
-           );
   };
 
   // Add this CSS class to hide print content by default
@@ -460,21 +449,6 @@ const InvoiceForm: React.FC = () => {
             </div>
           </div>
 
-          <div className="print-instructions">
-            <h3>
-              <Printer className="icon" />
-              تعليمات الطباعة
-            </h3>
-            <ul>
-              <li>• انقر على زر "طباعة" في الأعلى</li>
-              <li>• ستظهر نافذة جديدة بها بيانات الفاتورة جاهزة للطباعة</li>
-              <li>• في نافذة الطباعة، اختر حجم الورق A5 (الأقرب لمقاس 16سم × 20سم)</li>
-              <li>• اضبط الهوامش على "بلا" أو "الحد الأدنى"</li>
-              <li>• تأكد من إلغاء خيار "طباعة الخلفية" أو "طباعة الرسومات" للطباعة بدون خلفية</li>
-              <li>• سيتم طباعة بيانات العميل والتاريخ والأصناف فقط</li>
-            </ul>
-          </div>
-
           {/* Invoice Header Info */}
           <div className="form-grid">
             <div className="form-group">
@@ -511,6 +485,7 @@ const InvoiceForm: React.FC = () => {
                 value={invoiceData.date}
                 onChange={handleInputChange}
                 className={`form-input${isFieldMissing(null, 'date') ? ' input-error' : ''}`}
+                dir="ltr"
               />
             </div>
             <div className="form-group">
@@ -649,6 +624,24 @@ const InvoiceForm: React.FC = () => {
               <div className="total-amount">
                 {formatDisplayValue(invoiceData.totalAmount)} ج.م
               </div>
+            </div>
+          </div>
+
+          {/* Print Instructions Section */}
+          <div className="print-instructions-section">
+            <div className="print-instructions">
+              <h3>
+                <Printer className="icon" />
+                تعليمات الطباعة
+              </h3>
+              <ul>
+                <li>• انقر على زر "طباعة" في الأعلى</li>
+                <li>• ستظهر نافذة جديدة بها بيانات الفاتورة جاهزة للطباعة</li>
+                <li>• في نافذة الطباعة، اختر حجم الورق A5 (الأقرب لمقاس 16سم × 20سم)</li>
+                <li>• اضبط الهوامش على "بلا" أو "الحد الأدنى"</li>
+                <li>• تأكد من إلغاء خيار "طباعة الخلفية" أو "طباعة الرسومات" للطباعة بدون خلفية</li>
+                <li>• سيتم طباعة بيانات العميل والتاريخ والأصناف فقط</li>
+              </ul>
             </div>
           </div>
         </>
