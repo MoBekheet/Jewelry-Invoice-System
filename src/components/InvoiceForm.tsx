@@ -23,7 +23,7 @@ const formatDateToArabic = (dateStr: string): string => {
   return `${toArabicNumerals(year)}-${toArabicNumerals(month)}-${toArabicNumerals(day)}`;
 };
 
-const InvoiceForm: React.FC = () => {
+function InvoiceForm() {
   const [showValidation, setShowValidation] = useState(false);
   const [invoiceData, setInvoiceData] = useState<InvoiceData>({
     mobileNumber: '',
@@ -691,6 +691,6 @@ const InvoiceForm: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
 export default InvoiceForm;
