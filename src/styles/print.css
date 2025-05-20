@@ -32,23 +32,6 @@
     background: none !important;
     color: black !important;
   }
-
-  html {
-    height: 100%;
-    overflow: hidden;
-  }
-
-  @page :first {
-    margin: 0;
-  }
-
-  @page :left {
-    margin: 0;
-  }
-
-  @page :right {
-    margin: 0;
-  }
 }
 
 /* Hide print content by default */
@@ -59,14 +42,18 @@
 /* Text positioning for invoice fields */
 .text-position-date {
   position: absolute;
-  top: 51.5mm;
+  top: 5.15cm;
+  right: 2.6cm;
+  display: flex;
+  gap: 0.3cm;
+  direction: rtl;
 }
 
 .text-position-customer-name {
   position: absolute;
-  right: 40.5mm;
-  top: 58.5mm;
-  width: 47mm;
+  right: 4.05cm;
+  top: 5.85cm;
+  width: 4.7cm;
   font-size: 16px;
   direction: rtl;
   font-weight: 600;
@@ -74,9 +61,9 @@
 
 .text-position-mobile-number {
   position: absolute;
-  right: 96mm;
-  top: 58.5mm;
-  width: 32mm;
+  right: 9.6cm;
+  top: 5.85cm;
+  width: 3.2cm;
   font-size: 16px;
   direction: rtl;
   font-weight: 600;
@@ -84,9 +71,9 @@
 
 .text-position-total {
   position: absolute;
-  right: 13.5mm;
-  top: 167.5mm;
-  width: 32mm;
+  right: 1.35cm;
+  top: 16.75cm;
+  width: 3.2cm;
   font-size: 16px;
   direction: rtl;
   font-weight: bold;
@@ -96,92 +83,55 @@
 .date-day,
 .date-month,
 .date-year {
-  position: absolute;
-  text-align: center;
   font-size: 16px;
   direction: rtl;
   font-weight: 600;
+  width: 1cm;
+  text-align: center;
 }
 
-.date-day {
-  right: 26mm;
-  width: 10mm;
-}
-
-.date-month {
-  right: 39mm;
-  width: 10mm;
-}
-
-.date-year {
-  right: 54mm;
-  width: 10mm;
-}
-
-/* Item row positioning */
-.item-row {
+/* Items table positioning */
+.items-table {
   position: absolute;
+  top: 8.45cm;
+  right: 1.2cm;
+  width: 14cm;
   direction: rtl;
-  width: 100%;
+}
+
+.item-row {
+  position: relative;
+  height: 0.7cm;
+  display: grid;
+  grid-template-columns: 5.2cm 1.5cm 1.05cm 1.42cm 2.35cm;
+  gap: 0.2cm;
+  direction: rtl;
 }
 
 .item-cell {
-  position: absolute;
-  text-align: center;
+  font-size: 14px;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .item-description {
-  right: 100mm;
-  width: 52mm;
+  justify-content: right;
 }
 
-.item-price {
-  right: 75.2mm;
-  width: 15mm;
-}
-
-.item-karat {
-  right: 63mm;
-  width: 10.5mm;
-}
-
-.item-weight {
-  right: 42mm;
-  width: 14.2mm;
-}
-
+.item-price,
+.item-karat,
+.item-weight,
 .item-value {
-  right: 12mm;
-  width: 23.5mm;
+  text-align: center;
 }
 
-.item-weight-pound {
-  right: 47mm;
-  width: 16mm;
-}
-
-.item-weight-piaster {
-  right: 36mm;
-  width: 11mm;
-}
-
-.item-price-pound {
-  right: 84mm;
-  width: 16mm;
-}
-
-.item-price-piaster {
-  right: 74mm;
-  width: 10mm;
-}
-
-.item-value-pound {
-  right: 18mm;
-  width: 7mm;
-}
-
-.item-value-piaster {
-  right: 11mm;
-  width: 7mm;
+/* Print preview container */
+.preview-container {
+  width: 160mm;
+  height: 200mm;
+  position: relative;
+  margin: 0 auto;
+  background-color: white;
 }
