@@ -62,47 +62,34 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData, isPrintMod
       fontWeight: 600,
       fontSize: '16px'
     }}>
-      {/* Background Image */}
-      <div className="receipt-background" style={{ 
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '16cm',
-        height: '20cm',
-        opacity: 0.2,
-        backgroundImage: `url('/attached_assets/paper.jpg')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        zIndex: -1,
-        display: 'block'
-      }} />
+     
       
       {/* Header Section */}
-      <div style={{ position: 'absolute', top: '3.3cm', width: '16cm', height: '1.5cm' }}>
+      <div style={{ position: 'absolute', top: '3.5cm', width: '16cm', height: '1.5cm' }}>
         {/* Date Fields */}
-        <div style={{ position: 'absolute', top: '0cm', right: '3.5cm', width: '1.5cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0cm', right: '1.5cm', width: '1.5cm', textAlign: 'center' }}>
           {dateParts.day}
         </div>
-        <div style={{ position: 'absolute', top: '0cm', right: '5.3cm', width: '1.5cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0cm', right: '3.3cm', width: '1.5cm', textAlign: 'center' }}>
           {dateParts.month}
         </div>
-        <div style={{ position: 'absolute', top: '0cm', right: '7.1cm', width: '1.5cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0cm', right: '5.1cm', width: '1.5cm', textAlign: 'center' }}>
           {dateParts.year}
         </div>
         
         {/* Customer Name */}
-        <div style={{ position: 'absolute', top: '0.8cm', right: '1.8cm', width: '5.8cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.8cm', right: '2cm', width: '5.8cm', textAlign: 'center' }}>
           {invoiceData.customerName || '---'}
         </div>
         
         {/* Phone Number */}
-        <div style={{ position: 'absolute', top: '0.8cm', right: '11.5cm', width: '3cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.8cm', right: '8.5cm', width: '3cm', textAlign: 'center' }}>
           {invoiceData.mobileNumber || '---'}
         </div>
       </div>
       
       {/* Items Table */}
-      <div style={{ position: 'absolute', top: '6.5cm', width: '14.5cm', right: '0.75cm', height: '12cm', padding: '0' }}>
+      <div style={{ position: 'absolute', top: '7.5cm', width: '14.5cm', right: '0.75cm', height: '12cm', padding: '0' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', border: 'none' }}>
           <tbody>
             {invoiceData.items.map((item, index) => {
