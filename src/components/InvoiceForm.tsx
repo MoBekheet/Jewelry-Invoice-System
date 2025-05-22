@@ -451,29 +451,75 @@ function InvoiceForm() {
           <button 
             onClick={saveInvoice}
             className="button button-save"
+            style={{
+              backgroundColor: '#065f46',
+              color: '#ffffff',
+              border: 'none',
+              padding: '0.5rem 1rem',
+              borderRadius: '0.375rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.375rem',
+              fontSize: '0.875rem',
+              fontWeight: 600,
+              transition: 'all 0.2s ease',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
+              cursor: 'pointer'
+            }}
+            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#064e3b'}
+            onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#065f46'}
           >
-            <Save className="button-icon" />
+            <Save className="button-icon" size={16} />
             حفظ
           </button>
           <button 
             onClick={handlePrint}
             className="button button-print"
+            style={{
+              backgroundColor: '#1e40af',
+              color: '#ffffff',
+              border: 'none',
+              padding: '0.5rem 1rem',
+              borderRadius: '0.375rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.375rem',
+              fontSize: '0.875rem',
+              fontWeight: 600,
+              transition: 'all 0.2s ease',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
+              cursor: 'pointer'
+            }}
+            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#1e3a8a'}
+            onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#1e40af'}
           >
-            <Printer className="button-icon" />
+            <Printer className="button-icon" size={16} />
             طباعة
           </button>
           <button 
             onClick={handleDeleteInvoice}
             className="button button-delete"
             style={{ 
-              backgroundColor: '#450a0a', 
-              color: '#fca5a5',
+              backgroundColor: '#991b1b', 
+              color: '#ffffff',
+              border: 'none',
+              padding: '0.5rem 1rem',
+              borderRadius: '0.375rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.375rem',
+              fontSize: '0.875rem',
+              fontWeight: 600,
+              transition: 'all 0.2s ease',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
               opacity: hasInvoiceData() ? 1 : 0.5,
               cursor: hasInvoiceData() ? 'pointer' : 'not-allowed'
             }}
+            onMouseOver={(e) => hasInvoiceData() && (e.currentTarget.style.backgroundColor = '#7f1d1d')}
+            onMouseOut={(e) => hasInvoiceData() && (e.currentTarget.style.backgroundColor = '#991b1b')}
             disabled={!hasInvoiceData()}
           >
-            <Trash2 className="button-icon" />
+            <Trash2 className="button-icon" size={16} />
             حذف الفاتورة
           </button>
         </div>
@@ -636,10 +682,36 @@ function InvoiceForm() {
           <button
             onClick={addNewItem}
             className="button button-add"
+            style={{
+              backgroundColor: '#5b21b6',
+              color: '#ffffff',
+              border: 'none',
+              padding: '0.5rem 1rem',
+              borderRadius: '0.375rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.375rem',
+              fontSize: '0.875rem',
+              fontWeight: 600,
+              transition: 'all 0.2s ease',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
+              cursor: invoiceData.items.length >= 12 || hasIncompleteRow || hasIncompleteHeader ? 'not-allowed' : 'pointer',
+              opacity: invoiceData.items.length >= 12 || hasIncompleteRow || hasIncompleteHeader ? 0.5 : 1
+            }}
+            onMouseOver={(e) => {
+              if (!(invoiceData.items.length >= 12 || hasIncompleteRow || hasIncompleteHeader)) {
+                e.currentTarget.style.backgroundColor = '#4c1d95';
+              }
+            }}
+            onMouseOut={(e) => {
+              if (!(invoiceData.items.length >= 12 || hasIncompleteRow || hasIncompleteHeader)) {
+                e.currentTarget.style.backgroundColor = '#5b21b6';
+              }
+            }}
             disabled={invoiceData.items.length >= 12 || hasIncompleteRow || hasIncompleteHeader}
             title={invoiceData.items.length >= 12 ? 'الحد الأقصى للأصناف هو ١٢ صنف' : ''}
           >
-            <Plus className="button-icon" />
+            <Plus className="button-icon" size={16} />
             إضافة صنف
             {invoiceData.items.length >= 12 && (
               <span className="items-limit-indicator">
