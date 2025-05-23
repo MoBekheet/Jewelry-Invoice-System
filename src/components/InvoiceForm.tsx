@@ -695,20 +695,20 @@ function InvoiceForm() {
               fontWeight: 600,
               transition: 'all 0.2s ease',
               boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
-              cursor: invoiceData.items.length >= 13 || hasIncompleteRow || hasIncompleteHeader ? 'not-allowed' : 'pointer',
-              opacity: invoiceData.items.length >= 13 || hasIncompleteRow || hasIncompleteHeader ? 0.5 : 1
+              cursor: invoiceData.items.length >= 13 || hasIncompleteRow ? 'not-allowed' : 'pointer',
+              opacity: invoiceData.items.length >= 13 || hasIncompleteRow ? 0.5 : 1
             }}
             onMouseOver={(e) => {
-              if (!(invoiceData.items.length >= 13 || hasIncompleteRow || hasIncompleteHeader)) {
+              if (!(invoiceData.items.length >= 13 || hasIncompleteRow)) {
                 e.currentTarget.style.backgroundColor = '#4c1d95';
               }
             }}
             onMouseOut={(e) => {
-              if (!(invoiceData.items.length >= 13 || hasIncompleteRow || hasIncompleteHeader)) {
+              if (!(invoiceData.items.length >= 13 || hasIncompleteRow)) {
                 e.currentTarget.style.backgroundColor = '#5b21b6';
               }
             }}
-            disabled={invoiceData.items.length >= 13 || hasIncompleteRow || hasIncompleteHeader}
+            disabled={invoiceData.items.length >= 13 || hasIncompleteRow}
             title={invoiceData.items.length >= 13 ? 'الحد الأقصى للأصناف هو ١٣ صنف' : ''}
           >
             <Plus className="button-icon" size={16} />
