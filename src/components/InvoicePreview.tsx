@@ -54,23 +54,23 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
       {/* Header Section */}
       <div style={{ position: 'absolute', top: '3.5cm', width: '16cm', height: '1.5cm' }}>
         {/* Date Fields */}
-        <div style={{ position: 'absolute', top: '0.3cm', right: '1.7cm', width: '1.5cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '2cm', width: '1.5cm', textAlign: 'center' }}>
           {dateParts.day}
         </div>
-        <div style={{ position: 'absolute', top: '0.3cm', right: '3.1cm', width: '1.5cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '4cm', width: '1.5cm', textAlign: 'center' }}>
           {dateParts.month}
         </div>
-        <div style={{ position: 'absolute', top: '0.3cm', right: '4.9cm', width: '1.5cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '4.9cm', width: '1.5cm', textAlign: 'center' }}>
           {dateParts.year}
         </div>
         
         {/* Customer Name */}
-        <div style={{ position: 'absolute', top: '0.95cm', right: '2cm', width: '5.8cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '1.1cm', right: '2.2cm', width: '5.8cm', textAlign: 'center' }}>
           {invoiceData.customerName || '---'}
         </div>
         
         {/* Phone Number */}
-        <div style={{ position: 'absolute', top: '0.85cm', right: '7cm', width: '3cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '1.1cm', right: '11.5cm', width: '3cm', textAlign: 'center' }}>
           {invoiceData.mobileNumber || '---'}
         </div>
       </div>
@@ -100,7 +100,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
                   
                   {/* Weight in Milligrams */}
                   <td style={{ width: '1.6cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
-                    {weightMilligrams > 0 ? toArabicNumerals(weightMilligrams) : '00'}
+                    {weightMilligrams > 0 ? toArabicNumerals(weightMilligrams) : '٠٠'}
                   </td>
 
                   {/* Weight in Grams */}
@@ -115,7 +115,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
                   
                   {/* Price in Piasters */}
                   <td style={{ width: '1.2cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
-                    {pricePiaster ? toArabicNumerals(pricePiaster) : '00'}
+                    {pricePiaster ? toArabicNumerals(pricePiaster) : '٠٠'}
                   </td>
                   
                   {/* Price in Pounds */}
