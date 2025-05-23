@@ -109,17 +109,17 @@ function InvoiceForm() {
       id: Date.now().toString(),
       description: '',
       weight: {
-        grams: '',
-        milligrams: '',
+        grams: '0',
+        milligrams: '0',
       },
-      karat: '',
+      karat: '0',
       value: {
-        pound: '',
-        piaster: '',
+        pound: '0',
+        piaster: '0',
       },
       price: {
-        pound: '',
-        piaster: '',
+        pound: '0',
+        piaster: '0',
       },
       total: 0,
     };

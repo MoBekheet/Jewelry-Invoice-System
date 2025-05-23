@@ -76,7 +76,8 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
       </div>
       
       {/* Items Table */}
-      <div style={{ position: 'absolute', top: '5.3cm', width: '16cm' }}>
+      <div style={{ position: 'absolute', top: '7.5cm', width: '14.5cm', right: '0.75cm', height: '12cm', padding: '0' }}>
+        {/*<div style={{ position: 'absolute', top: '5.3cm', width: '16cm' }}>*/}
         <table style={{ width: '100%', borderCollapse: 'collapse', border: 'none' }}>
           <tbody>
             {invoiceData.items.map((item, index) => {
