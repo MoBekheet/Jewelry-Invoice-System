@@ -3,6 +3,8 @@ import {
   Printer, Save, Trash2, Plus
 } from 'lucide-react';
 import InvoicePreview from './InvoicePreview';
+import Modal from './Modal';
+import Toast from './Toast';
 import { InvoiceData, InvoiceItem } from '../types/invoice';
 import { calculateRowTotal, calculateInvoiceTotal } from '../utils/calculations';
 import { getSavedInvoices, loadInvoice, deleteInvoice } from '../utils/storage';
@@ -25,6 +27,20 @@ const formatDateToArabic = (dateStr: string): string => {
 
 function InvoiceForm() {
   const [showValidation, setShowValidation] = useState(false);
+  const [modalConfig, setModalConfig] = useState({
+    isOpen: false,
+    title: '',
+    message: '',
+    type: 'info' as 'error' | 'success' | 'info',
+    onConfirm: () => {},
+    confirmText: 'حسناً',
+    cancelText: 'إلغاء'
+  });
+  const [toastConfig, setToastConfig] = useState({
+    message: '',
+    type: 'info' as 'error' | 'success' | 'info',
+    show: false
+  });
   const [invoiceData, setInvoiceData] = useState<InvoiceData>({
     mobileNumber: '',
     date: new Date().toISOString().slice(0, 10),
@@ -227,10 +243,48 @@ function InvoiceForm() {
     });
   };
 
+  const showModal = (
+    title: string, 
+    message: string, 
+    type: 'error' | 'success' | 'info' = 'info',
+    confirmText: string = 'حسناً',
+    cancelText: string = 'إلغاء',
+    onConfirm: () => void = () => {}
+  ) => {
+    setModalConfig({
+      isOpen: true,
+      title,
+      message,
+      type,
+      onConfirm,
+      confirmText,
+      cancelText
+    });
+  };
+
+  const closeModal = () => {
+    setModalConfig(prev => ({ ...prev, isOpen: false }));
+  };
+
+  const showToast = (message: string, type: 'error' | 'success' | 'info' = 'info') => {
+    setToastConfig({
+      message,
+      type,
+      show: true
+    });
+  };
+
+  const closeToast = () => {
+    setToastConfig(prev => ({ ...prev, show: false }));
+  };
+
   const handlePrint = () => {
     setShowValidation(true);
     if (hasIncompleteRow || hasIncompleteHeader) {
-      alert('يرجى ملء جميع الحقول المطلوبة قبل الطباعة');
+      showToast(
+        'يرجى ملء جميع الحقول المطلوبة قبل الطباعة',
+        'error'
+      );
       return;
     }
 
@@ -311,26 +365,48 @@ function InvoiceForm() {
 
   const saveInvoice = () => {
     setShowValidation(true);
-    if (hasIncompleteRow || hasIncompleteHeader) return;
+    if (hasIncompleteRow || hasIncompleteHeader) {
+      showToast(
+        'يرجى ملء جميع الحقول المطلوبة قبل الحفظ',
+        'error'
+      );
+      return;
+    }
     const data = JSON.stringify(invoiceData);
     localStorage.setItem(`invoice-${invoiceData.mobileNumber || Date.now()}`, data);
-    alert('تم حفظ الفاتورة بنجاح!');
+    showToast(
+      'تم حفظ الفاتورة بنجاح!',
+      'success'
+    );
   };
 
   const handleDeleteInvoice = () => {
-    if (confirm('هل أنت متأكد من حذف الفاتورة الحالية؟')) {
-      const key = `invoice-${invoiceData.mobileNumber || Date.now()}`;
-      deleteInvoice(key);
-      setShowValidation(false);
-      setInvoiceData({
-        mobileNumber: '',
-        date: new Date().toISOString().slice(0, 10),
-        customerName: '',
-        items: [createEmptyItem()],
-        totalAmount: 0,
-      });
-      alert('تم حذف الفاتورة بنجاح');
-    }
+    showModal(
+      'تأكيد الحذف',
+      'هل أنت متأكد من حذف الفاتورة الحالية؟',
+      'error',
+      'حذف',
+      'إلغاء',
+      confirmDelete
+    );
+  };
+
+  const confirmDelete = () => {
+    const key = `invoice-${invoiceData.mobileNumber || Date.now()}`;
+    deleteInvoice(key);
+    setShowValidation(false);
+    setInvoiceData({
+      mobileNumber: '',
+      date: new Date().toISOString().slice(0, 10),
+      customerName: '',
+      items: [createEmptyItem()],
+      totalAmount: 0,
+    });
+    showToast(
+      'تم حذف الفاتورة بنجاح',
+      'success'
+    );
+    closeModal();
   };
 
   // Check if invoice has any data
@@ -760,6 +836,27 @@ function InvoiceForm() {
           }}
         />
       </div>
+
+      <Modal
+        isOpen={modalConfig.isOpen}
+        onClose={closeModal}
+        onConfirm={modalConfig.onConfirm}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        type={modalConfig.type}
+        confirmText={modalConfig.confirmText}
+        cancelText={modalConfig.cancelText}
+      />
+
+      {toastConfig.show && (
+        <div className="toast-container">
+          <Toast
+            message={toastConfig.message}
+            type={toastConfig.type}
+            onClose={closeToast}
+          />
+        </div>
+      )}
 
       <style>
         {`
