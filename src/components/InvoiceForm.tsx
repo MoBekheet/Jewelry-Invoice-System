@@ -549,12 +549,12 @@ function InvoiceForm() {
       </div>
 
       {/* Items Table */}
+      {showValidation && (hasIncompleteRow || hasIncompleteHeader) && (
+        <div className="validation-message" style={{color: '#b91c1c', marginBottom: '8px', fontWeight: 'bold', fontSize: '0.95rem'}}>
+          يوجد حقول مطلوبة يجب تعبئتها أولاً
+        </div>
+      )}
       <div className="table-container">
-        {showValidation && (hasIncompleteRow || hasIncompleteHeader) && (
-          <div className="validation-message" style={{color: '#b91c1c', marginBottom: '8px', fontWeight: 'bold', fontSize: '0.95rem'}}>
-            يوجد حقول مطلوبة يجب تعبئتها أولاً
-          </div>
-        )}
         <table className="table">
           <thead className="table-header">
             <tr className="table-header">
@@ -562,18 +562,18 @@ function InvoiceForm() {
               <th className="table-header-cell">
                 <div className="header-with-hint">
                   <span>الفئة</span>
-                  <span className="header-hint">(جنيه وقرش)</span>
+                  <span className="header-hint">(جنيه - قرش)</span>
                 </div>
               </th>
               <th className="table-header-cell">العيار</th>
               <th className="table-header-cell">
                 <div className="header-with-hint">
                   <span>الوزن</span>
-                  <span className="header-hint">(جرام ومللي)</span>
+                  <span className="header-hint">(جرام - مللي)</span>
                 </div>
               </th>
               <th className="table-header-cell">القيمة</th>
-              <th className="table-header-cell">حذف</th>
+              <th className="table-header-cell">الاجراءات</th>
             </tr>
           </thead>
           <tbody>
@@ -677,7 +677,7 @@ function InvoiceForm() {
         </table>
       </div>
 
-      <div className="total-section">
+      <div className="total-actions-section">
         <div className="add-item-section">
           <button
             onClick={addNewItem}
@@ -726,7 +726,7 @@ function InvoiceForm() {
           )}
         </div>
         
-        <div className="total-section">
+        <div className="total-amount-section">
           <div className="total-label">الإجمالي:</div>
           <div className="total-amount">
             {formatDisplayValue(invoiceData.totalAmount)} ج.م
@@ -779,11 +779,6 @@ function InvoiceForm() {
             text-align: center;
             font-weight: 600;
             color: #ffffff;
-            background-color: #1e40af;
-            border-bottom: 1px solid #1e3a8a;
-          }
-          .table-header {
-            background-color: #1e40af;
           }
         `}
       </style>

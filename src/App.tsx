@@ -20,7 +20,7 @@ function App() {
       
       <footer className="footer">
         <div className="footer-container">
-          <p>© 2025 مجوهرات أبي سيفين. جميع الحقوق محفوظة.</p>
+          <p>© 2025 مجوهرات أبي سيفين. جميع الحقوق محفوظة</p>
         </div>
       </footer>
     </div>
