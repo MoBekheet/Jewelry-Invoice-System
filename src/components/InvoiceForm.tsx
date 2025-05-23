@@ -373,74 +373,48 @@ function InvoiceForm() {
   };
 
   // Function to handle numeric input change
-  const handleNumericInputChange = (id: string, field: string, value: string) => {
-    const isDecimalField = field.includes('piaster') || field.includes('milligrams');
-    const maxLength = isDecimalField ? 2 : 6;
-    
-    // Convert Arabic numerals to English
-    const englishValue = value.replace(/[٠-٩]/g, (d) => 
-      String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-    );
-    
-    // For decimal fields, ensure we only have numbers and handle leading zeros
-    let validatedValue = englishValue;
-    if (isDecimalField) {
-      validatedValue = englishValue.replace(/[^\d]/g, '');
-      // Remove leading zeros
-      validatedValue = validatedValue.replace(/^0+/, '');
-      // If empty after removing leading zeros, keep it empty
-      if (validatedValue === '') {
-        validatedValue = '';
-      }
-    } else {
-      validatedValue = validateNumericInput(englishValue);
-    }
-    
-    // Apply max length
-    validatedValue = validatedValue.slice(0, maxLength);
-    
-    // Update the item with the new value
-    const updatedItems = invoiceData.items.map(item => {
-      if (item.id === id) {
-        let updatedItem = { ...item };
+  const handleNumericInputChange = (itemId: string, field: string, value: string) => {
+    const newItems = invoiceData.items.map(item => {
+      if (item.id === itemId) {
+        const newItem = { ...item };
+        const [parent, child] = field.split('.');
         
-        if (field.includes('.')) {
-          const [parent, child] = field.split('.');
-          updatedItem = {
-            ...item,
-            [parent]: {
-              ...item[parent as keyof InvoiceItem] as Record<string, any>,
-              [child]: validatedValue
-            }
-          };
+        if (child) {
+          if (parent === 'weight') {
+            newItem.weight = {
+              ...newItem.weight,
+              [child]: value
+            };
+          } else if (parent === 'value') {
+            newItem.value = {
+              ...newItem.value,
+              [child]: value
+            };
+          } else if (parent === 'price') {
+            newItem.price = {
+              ...newItem.price,
+              [child]: value
+            };
+          }
         } else {
-          updatedItem = { ...item, [field]: validatedValue };
+          if (field === 'karat') {
+            newItem.karat = value;
+          }
         }
 
-        // Calculate total for this item
-        const total = calculateRowTotal(updatedItem);
-
-        return {
-          ...updatedItem,
-          total
-        };
+        return newItem;
       }
       return item;
     });
 
-    // Calculate the total amount for the invoice
-    const totalAmount = calculateInvoiceTotal(updatedItems);
+    // Calculate new total amount
+    const totalAmount = calculateInvoiceTotal(newItems);
 
-    setInvoiceData({
-      ...invoiceData,
-      items: updatedItems,
+    setInvoiceData(prev => ({
+      ...prev,
+      items: newItems,
       totalAmount
-    });
-  };
-
-  // Function to validate numeric input
-  const validateNumericInput = (value: string): string => {
-    return value.replace(/[^\d]/g, '');
+    }));
   };
 
   return (
@@ -583,13 +557,23 @@ function InvoiceForm() {
         )}
         <table className="table">
           <thead className="table-header">
-            <tr>
-              <th>الصنف</th>
-              <th>الوزن (جرام.مجم)</th>
-              <th>العيار</th>
-              <th>فئة (ج.م)</th>
-              <th>الإجمالي</th>
-              <th>الإجراءات</th>
+            <tr className="table-header">
+              <th className="table-header-cell">الوصف</th>
+              <th className="table-header-cell">
+                <div className="header-with-hint">
+                  <span>الفئة</span>
+                  <span className="header-hint">(جنيه وقرش)</span>
+                </div>
+              </th>
+              <th className="table-header-cell">العيار</th>
+              <th className="table-header-cell">
+                <div className="header-with-hint">
+                  <span>الوزن</span>
+                  <span className="header-hint">(جرام ومللي)</span>
+                </div>
+              </th>
+              <th className="table-header-cell">القيمة</th>
+              <th className="table-header-cell">حذف</th>
             </tr>
           </thead>
           <tbody>
@@ -603,39 +587,7 @@ function InvoiceForm() {
                     className={`form-input${isFieldMissing(item, 'description') ? ' input-error' : ''}`}
                     placeholder="وصف الصنف"
                     data-item-id={item.id}
-                  />
-                </td>
-                <td className="table-cell">
-                  <div className="input-group">
-                    <input
-                      type="text"
-                      value={formatInputValue(item.weight.grams, false)}
-                      onChange={(e) => handleNumericInputChange(item.id, 'weight.grams', e.target.value)}
-                      className={`form-input${isFieldMissing(item, 'weight.grams') ? ' input-error' : ''}`}
-                      placeholder="جرام"
-                      inputMode="decimal"
-                      maxLength={8}
-                    />
-                    <input
-                      type="text"
-                      value={formatInputValue(item.weight.milligrams, true)}
-                      onChange={(e) => handleNumericInputChange(item.id, 'weight.milligrams', e.target.value)}
-                      className="form-input"
-                      placeholder="مجم"
-                      inputMode="decimal"
-                      maxLength={2}
-                    />
-                  </div>
-                </td>
-                <td className="table-cell">
-                  <input
-                    type="text"
-                    value={formatInputValue(item.karat, false)}
-                    onChange={(e) => handleNumericInputChange(item.id, 'karat', e.target.value)}
-                    className={`form-input${isFieldMissing(item, 'karat') ? ' input-error' : ''}`}
-                    placeholder="عيار"
-                    inputMode="decimal"
-                    maxLength={8}
+                    onFocus={(e) => e.target.select()}
                   />
                 </td>
                 <td className="table-cell">
@@ -648,6 +600,7 @@ function InvoiceForm() {
                       placeholder="جنيه"
                       inputMode="decimal"
                       maxLength={8}
+                      onFocus={(e) => e.target.select()}
                     />
                     <input
                       type="text"
@@ -657,13 +610,57 @@ function InvoiceForm() {
                       placeholder="قرش"
                       inputMode="decimal"
                       maxLength={2}
+                      onFocus={(e) => e.target.select()}
                     />
                   </div>
                 </td>
                 <td className="table-cell">
-                  <div className="total-amount">
-                    {formatDisplayValue(item.total)} ج.م
+                  <input
+                    type="text"
+                    value={formatInputValue(item.karat, false)}
+                    onChange={(e) => handleNumericInputChange(item.id, 'karat', e.target.value)}
+                    className={`form-input${isFieldMissing(item, 'karat') ? ' input-error' : ''}`}
+                    placeholder="عيار"
+                    inputMode="decimal"
+                    maxLength={8}
+                    onFocus={(e) => e.target.select()}
+                  />
+                </td>
+                <td className="table-cell">
+                  <div className="input-group">
+                    <input
+                      type="text"
+                      value={formatInputValue(item.weight.grams, false)}
+                      onChange={(e) => handleNumericInputChange(item.id, 'weight.grams', e.target.value)}
+                      className={`form-input${isFieldMissing(item, 'weight.grams') ? ' input-error' : ''}`}
+                      placeholder="جرام"
+                      inputMode="decimal"
+                      maxLength={8}
+                      onFocus={(e) => e.target.select()}
+                    />
+                    <input
+                      type="text"
+                      value={formatInputValue(item.weight.milligrams, true)}
+                      onChange={(e) => handleNumericInputChange(item.id, 'weight.milligrams', e.target.value)}
+                      className="form-input"
+                      placeholder="مللي"
+                      inputMode="decimal"
+                      maxLength={2}
+                      onFocus={(e) => e.target.select()}
+                    />
                   </div>
+                </td>
+                <td className="table-cell">
+                  <input
+                    type="text"
+                    value={formatInputValue(item.value.pound, false)}
+                    onChange={(e) => handleNumericInputChange(item.id, 'value.pound', e.target.value)}
+                    className={`form-input${isFieldMissing(item, 'value.pound') ? ' input-error' : ''}`}
+                    placeholder="القيمة"
+                    inputMode="decimal"
+                    maxLength={8}
+                    onFocus={(e) => e.target.select()}
+                  />
                 </td>
                 <td className="table-cell">
                   <button 
@@ -763,6 +760,33 @@ function InvoiceForm() {
           }}
         />
       </div>
+
+      <style>
+        {`
+          .header-with-hint {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+          }
+          .header-hint {
+            font-size: 0.8em;
+            color: #9ca3af;
+            font-weight: normal;
+          }
+          .table-header-cell {
+            padding: 8px;
+            text-align: center;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: #1e40af;
+            border-bottom: 1px solid #1e3a8a;
+          }
+          .table-header {
+            background-color: #1e40af;
+          }
+        `}
+      </style>
     </div>
   );
 }

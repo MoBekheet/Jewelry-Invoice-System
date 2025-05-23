@@ -21,14 +21,18 @@ export const calculateRowTotal = (item: InvoiceItem): number => {
     String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
   )) || 0;
 
+  const valuePound = parseFloat(item.value.pound.replace(/[٠-٩]/g, (d) => 
+    String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+  )) || 0;
+
   // Convert milligrams to grams (1000 mg = 1 g)
   const totalWeight = weightGrams + (weightMilligrams / 1000);
   
   // Convert piasters to pounds (100 piasters = 1 pound)
   const totalPrice = pricePound + (pricePiaster / 100);
   
-  // Calculate total (weight * price)
-  const total = totalWeight * totalPrice;
+  // Calculate total (weight * price + value)
+  const total = (totalWeight * totalPrice) + valuePound;
   
   // Round to 2 decimal places
   return Math.round(total * 100) / 100;
@@ -38,7 +42,12 @@ export const calculateRowTotal = (item: InvoiceItem): number => {
  * Calculate the total for the entire invoice
  */
 export const calculateInvoiceTotal = (items: InvoiceItem[]): number => {
-  const total = items.reduce((sum, item) => sum + item.total, 0);
+  const total = items.reduce((sum, item) => {
+    const valuePound = parseFloat(item.value.pound.replace(/[٠-٩]/g, (d) => 
+      String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+    )) || 0;
+    return sum + valuePound;
+  }, 0);
   return Math.round(total * 100) / 100;
 };
 
