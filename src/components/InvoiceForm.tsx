@@ -540,6 +540,7 @@ function InvoiceForm() {
             className={`form-input${isFieldMissing(null, 'mobileNumber') ? ' input-error' : ''}`}
             placeholder="رقم الموبايل"
             inputMode="numeric"
+            style={{ height: '2.5rem' }}
           />
         </div>
         <div className="form-group">
@@ -554,6 +555,7 @@ function InvoiceForm() {
             onChange={handleInputChange}
             className={`form-input${isFieldMissing(null, 'date') ? ' input-error' : ''}`}
             dir="ltr"
+            style={{ height: '2.5rem' }}
           />
         </div>
         <div className="form-group">
@@ -567,6 +569,7 @@ function InvoiceForm() {
             value={invoiceData.customerName}
             onChange={handleInputChange}
             className={`form-input${isFieldMissing(null, 'customerName') ? ' input-error' : ''}`}
+            style={{ height: '2.5rem' }}
           />
         </div>
       </div>
