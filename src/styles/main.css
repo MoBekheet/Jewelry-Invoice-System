@@ -1,15 +1,15 @@
 /* Main Layout */
 .app-container {
   min-height: 100vh;
-  background: linear-gradient(to bottom, #1a1f2e, #111827);
+  background-color: #F3F4F6; /* Light gray background */
   direction: rtl;
-  color: #e5e7eb;
+  color: #1F2937; /* Dark gray/black text */
 }
 
 /* Header */
 .header {
-  background-color: #1f2937;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  background-color: #FFFFFF; /* Light shade background */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Softer shadow for light theme */
   padding: 1rem 0;
 }
 
@@ -25,14 +25,14 @@
 .header-icon {
   height: 2rem;
   width: 2rem;
-  color: #eab308;
+  color: #3B82F6; /* Primary color for icon */
   margin-left: 0.5rem;
 }
 
 .header-title {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #e5e7eb;
+  color: #1F2937; /* Dark text */
 }
 
 /* Main Content */
@@ -48,12 +48,12 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #1f2937;
+  background-color: #FFFFFF; /* Light shade background */
   padding: 1rem;
-  border-top: 1px solid #374151;
+  border-top: 1px solid #D1D5DB; /* Light gray border */
   text-align: center;
   font-size: 0.875rem;
-  color: #9ca3af;
+  color: #374151; /* Dark text */
   z-index: 50;
 }
 
@@ -66,9 +66,9 @@
 
 /* Invoice Form */
 .invoice-form {
-  background-color: #1f2937;
+  background-color: #FFFFFF; /* Light background */
   border-radius: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Softer shadow */
   padding: 1.5rem 1.5rem 2rem 1.5rem;
   margin-bottom: 3rem;
 }
@@ -83,7 +83,7 @@
 .form-title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #e5e7eb;
+  color: #1F2937; /* Dark text */
 }
 
 .button-group {
@@ -111,36 +111,36 @@
 }
 
 .button-preview {
-  background-color: #1e40af;
-  color: #e5e7eb;
+  background-color: #3B82F6; /* Blue */
+  color: #FFFFFF;
 }
 
 .button-preview:hover {
-  background-color: #1d4ed8;
+  background-color: #2563EB;
 }
 
 .button-save {
-  background-color: #065f46;
-  color: #e5e7eb;
+  background-color: #10B981; /* Green */
+  color: #FFFFFF;
 }
 
 .button-save:hover {
-  background-color: #047857;
+  background-color: #059669;
 }
 
 .button-print {
-  background-color: #5b21b6;
-  color: #e5e7eb;
+  background-color: #6366F1; /* Indigo/Purple */
+  color: #FFFFFF;
 }
 
 .button-print:hover {
-  background-color: #6d28d9;
+  background-color: #4F46E5;
 }
 
 /* Add Item Button */
 .button-add {
-  background-color: #2563eb;
-  color: #e5e7eb;
+  background-color: #3B82F6; /* Blue */
+  color: #FFFFFF;
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
   display: flex;
@@ -149,12 +149,12 @@
 }
 
 .button-add:hover {
-  background-color: #1d4ed8;
+  background-color: #2563EB;
 }
 
 .button-add .button-icon {
   margin-left: 0.5rem;
-  color: #e5e7eb;
+  color: #FFFFFF;
 }
 
 /* Form Grid */
@@ -179,34 +179,34 @@
   display: block;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #e5e7eb;
+  color: #1F2937; /* Dark text */
   margin-bottom: 0.25rem;
 }
 
 .form-input {
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid #4b5563;
+  border: 1px solid #D1D5DB; /* Light gray border */
   border-radius: 0.25rem;
   transition: all 0.2s;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: #e5e7eb;
-  background-color: #374151;
+  color: #1F2937; /* Dark text */
+  background-color: #FFFFFF; /* Light background */
 }
 
 .form-input:hover {
-  border-color: #6b7280;
+  border-color: #9CA3AF; /* Medium gray border on hover */
 }
 
 .form-input:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: #3B82F6; /* Primary color border on focus */
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
 .form-input::placeholder {
-  color: #9ca3af;
+  color: #6B7280; /* Medium gray placeholder text */
 }
 
 /* Input Group Styles */
@@ -219,27 +219,27 @@
 .input-group input {
   width: 50%;
   padding: 0.5rem;
-  border: 1px solid #4b5563;
+  border: 1px solid #D1D5DB; /* Light gray border */
   border-radius: 0.25rem;
   transition: all 0.2s;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: #e5e7eb;
-  background-color: #374151;
+  color: #1F2937; /* Dark text */
+  background-color: #FFFFFF; /* Light background */
 }
 
 .input-group input:hover {
-  border-color: #6b7280;
+  border-color: #9CA3AF; /* Medium gray border on hover */
 }
 
 .input-group input:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: #3B82F6; /* Primary color border on focus */
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
 .input-group input::placeholder {
-  color: #9ca3af;
+  color: #6B7280; /* Medium gray placeholder text */
 }
 
 /* Table Styles */
@@ -255,7 +255,7 @@
 }
 
 .table-header {
-  background-color: #111827;
+  background-color: #F3F4F6; /* Very light gray background */
 }
 
 .table-header th {
@@ -263,47 +263,48 @@
   text-align: right;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #e5e7eb;
-  border-bottom: 1px solid #374151;
+  color: #1F2937; /* Dark gray/black text */
+  border-bottom: 1px solid #D1D5DB; /* Light gray border */
 }
 
 .table-row {
-  background-color: #1f2937;
+  background-color: #FFFFFF; /* White background */
 }
 
 .table-row:nth-child(even) {
-  background-color: #111827;
+  background-color: #F9FAFB; /* Slightly off-white for striping */
 }
 
 .table-cell {
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid #374151;
+  border-bottom: 1px solid #D1D5DB; /* Light gray border */
+  color: #1F2937; /* Dark text */
 }
 
 .table-cell input {
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid #4b5563;
+  border: 1px solid #D1D5DB; /* Light gray border */
   border-radius: 0.25rem;
   transition: all 0.2s;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: #e5e7eb;
-  background-color: #374151;
+  color: #1F2937; /* Dark text */
+  background-color: #FFFFFF; /* Light background */
 }
 
 .table-cell input:hover {
-  border-color: #6b7280;
+  border-color: #9CA3AF; /* Medium gray border on hover */
 }
 
 .table-cell input:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: #3B82F6; /* Primary color border on focus */
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
 .table-cell input::placeholder {
-  color: #9ca3af;
+  color: #6B7280; /* Medium gray placeholder text */
 }
 
 /* Table Cell Input Group Styles */
@@ -316,37 +317,37 @@
 .table-cell .input-group input {
   width: 50%;
   padding: 0.5rem;
-  border: 1px solid #4b5563;
+  border: 1px solid #D1D5DB; /* Light gray border */
   border-radius: 0.25rem;
   transition: all 0.2s;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: #e5e7eb;
-  background-color: #374151;
+  color: #1F2937; /* Dark text */
+  background-color: #FFFFFF; /* Light background */
 }
 
-.table-cell .input-cell .input-group input:hover {
-  border-color: #6b7280;
+.table-cell .input-group input:hover { /* Combined selector for specificity */
+  border-color: #9CA3AF; /* Medium gray border on hover */
 }
 
-.table-cell .input-cell .input-group input:focus {
+.table-cell .input-group input:focus { /* Combined selector for specificity */
   outline: none;
-  border-color: #3b82f6;
+  border-color: #3B82F6; /* Primary color border on focus */
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
-.table-cell .input-cell .input-group input::placeholder {
-  color: #9ca3af;
+.table-cell .input-group input::placeholder { /* Combined selector for specificity */
+  color: #6B7280; /* Medium gray placeholder text */
 }
 
 /* Table Cell Total Styles */
 .table-cell .total-amount {
   font-size: 0.875rem;
   font-weight: 500;
-  color: #e5e7eb;
+  color: #1F2937; /* Dark text */
   text-align: center;
   padding: 0.25rem 0.5rem;
-  background-color: #374151;
+  background-color: #E5E7EB; /* Light gray background */
   border-radius: 0.25rem;
   min-width: 80px;
   display: inline-block;
@@ -354,9 +355,9 @@
 
 /* Action Buttons */
 .action-button {
-  color: #ef4444;
+  color: #EF4444; /* Red for danger/delete */
   cursor: pointer;
-  transition: color 0.2s;
+  transition: color 0.2s, background-color 0.2s;
   padding: 0.25rem;
   border-radius: 0.25rem;
   display: flex;
@@ -367,18 +368,18 @@
 }
 
 .action-button:hover {
-  color: #dc2626;
-  background-color: #991b1b;
+  color: #DC2626; /* Darker red on hover */
+  background-color: #FEE2E2; /* Very light red background on hover */
 }
 
 .action-button:disabled {
-  color: #6b7280;
+  color: #9CA3AF; /* Muted gray for disabled */
   cursor: not-allowed;
   background: transparent;
 }
 
 .action-button:disabled:hover {
-  background: transparent;
+  background: transparent; /* No background change on hover when disabled */
 }
 
 .action-button svg {
@@ -397,20 +398,20 @@
 .total-label {
   font-size: 0.875rem;
   font-weight: 500;
-  color: #e5e7eb;
+  color: #1F2937; /* Dark text */
   margin-left: 0.5rem;
 }
 
 .total-amount {
   font-size: 1.25rem;
   font-weight: bold;
-  color: #e5e7eb;
+  color: #1F2937; /* Dark text */
   margin: 0 0.5rem;
 }
 
 .calculate-button {
-  background-color: #92400e;
-  color: #e5e7eb;
+  background-color: #F59E0B; /* Amber/Yellow */
+  color: #FFFFFF; /* White text for contrast */
   padding: 0.25rem;
   border-radius: 0.25rem;
   margin-right: 0.5rem;
@@ -422,7 +423,7 @@
 }
 
 .calculate-button:hover {
-  background-color: #b45309;
+  background-color: #D97706; /* Darker amber/yellow */
 }
 
 /* Add Item Section */
@@ -433,13 +434,13 @@
 }
 
 .items-count {
-  color: #9ca3af;
+  color: #4B5563; /* Medium/dark gray */
   font-size: 0.875rem;
 }
 
 .items-limit-indicator {
   margin-right: 0.5rem;
-  color: #fca5a5;
+  color: #EF4444; /* Red for warning, ensure good contrast */
   font-size: 0.875rem;
 }
 
@@ -447,15 +448,15 @@
 .print-instructions-section {
   margin-top: 2rem;
   padding-top: 2rem;
-  border-top: 1px solid #374151;
+  border-top: 1px solid #D1D5DB; /* Light gray border */
 }
 
 .print-instructions {
-  background-color: #1f2937;
-  border: 1px solid #374151;
+  background-color: #F9FAFB; /* Very light gray background */
+  border: 1px solid #D1D5DB; /* Light gray border */
   border-radius: 0.5rem;
   padding: 1rem;
-  color: #e5e7eb;
+  color: #1F2937; /* Dark text */
 }
 
 .print-instructions h3 {
@@ -465,7 +466,7 @@
   font-size: 1.125rem;
   font-weight: 600;
   margin-bottom: 1rem;
-  color: #eab308;
+  color: #1F2937; /* Dark text for heading */
 }
 
 .print-instructions ul {
@@ -480,6 +481,7 @@
   gap: 0.5rem;
   margin-bottom: 0.5rem;
   font-size: 0.875rem;
+  color: #374151; /* Dark text for list items */
 }
 
 .print-instructions li:last-child {
@@ -487,6 +489,11 @@
 }
 
 .input-error {
-  border: 1.5px solid #ef4444 !important;
-  background-color: #991b1b;
+  border: 1.5px solid #EF4444 !important; /* Prominent red border */
+  background-color: #FEE2E2; /* Very light red tint for background */
+  color: #7f1d1d !important; /* Darker red text for readability */
+}
+
+.input-error::placeholder {
+  color: #b91c1c !important; /* Darker red for placeholder */
 }
