@@ -199,7 +199,7 @@ function InvoiceForm() {
   };
 
   const addNewItem = () => {
-    if (invoiceData.items.length >= 12) return;
+    if (invoiceData.items.length >= 13) return;
     
     const newItem = createEmptyItem();
     setInvoiceData({
@@ -695,33 +695,33 @@ function InvoiceForm() {
               fontWeight: 600,
               transition: 'all 0.2s ease',
               boxShadow: '0 1px 2px rgba(0,0,0,0.1)',
-              cursor: invoiceData.items.length >= 12 || hasIncompleteRow || hasIncompleteHeader ? 'not-allowed' : 'pointer',
-              opacity: invoiceData.items.length >= 12 || hasIncompleteRow || hasIncompleteHeader ? 0.5 : 1
+              cursor: invoiceData.items.length >= 13 || hasIncompleteRow || hasIncompleteHeader ? 'not-allowed' : 'pointer',
+              opacity: invoiceData.items.length >= 13 || hasIncompleteRow || hasIncompleteHeader ? 0.5 : 1
             }}
             onMouseOver={(e) => {
-              if (!(invoiceData.items.length >= 12 || hasIncompleteRow || hasIncompleteHeader)) {
+              if (!(invoiceData.items.length >= 13 || hasIncompleteRow || hasIncompleteHeader)) {
                 e.currentTarget.style.backgroundColor = '#4c1d95';
               }
             }}
             onMouseOut={(e) => {
-              if (!(invoiceData.items.length >= 12 || hasIncompleteRow || hasIncompleteHeader)) {
+              if (!(invoiceData.items.length >= 13 || hasIncompleteRow || hasIncompleteHeader)) {
                 e.currentTarget.style.backgroundColor = '#5b21b6';
               }
             }}
-            disabled={invoiceData.items.length >= 12 || hasIncompleteRow || hasIncompleteHeader}
-            title={invoiceData.items.length >= 12 ? 'الحد الأقصى للأصناف هو ١٢ صنف' : ''}
+            disabled={invoiceData.items.length >= 13 || hasIncompleteRow || hasIncompleteHeader}
+            title={invoiceData.items.length >= 13 ? 'الحد الأقصى للأصناف هو ١٣ صنف' : ''}
           >
             <Plus className="button-icon" size={16} />
             إضافة صنف
-            {invoiceData.items.length >= 12 && (
+            {invoiceData.items.length >= 13 && (
               <span className="items-limit-indicator">
-                (١٢/١٢)
+                (١٣/١٣)
               </span>
             )}
           </button>
-          {invoiceData.items.length < 12 && (
+          {invoiceData.items.length < 13 && (
             <span className="items-count">
-              ({toArabicNumerals(invoiceData.items.length.toString())}/١٢)
+              ({toArabicNumerals(invoiceData.items.length.toString())}/١٣)
             </span>
           )}
         </div>
@@ -758,7 +758,6 @@ function InvoiceForm() {
             ...invoiceData,
             date: formatDateToArabic(invoiceData.date)
           }}
-          isPrintMode={true} 
         />
       </div>
     </div>
