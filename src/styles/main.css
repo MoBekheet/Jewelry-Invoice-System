@@ -137,8 +137,8 @@
 .form-label {
   display: block;
   font-size: 0.875rem;
-  font-weight: 500;
-  color: #4b5563;
+  font-weight: 600;
+  color: #1f2937;
   margin-bottom: 0.5rem;
 }
 
@@ -224,9 +224,9 @@
 .table-header th {
   padding: 1rem;
   text-align: right;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #4b5563;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1f2937;
   border-bottom: 1px solid #e5e7eb;
 }
 
@@ -250,10 +250,11 @@
   border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
   transition: all 0.2s;
-  font-size: 0.875rem;
+  font-size: 0.95rem;
   line-height: 1.25rem;
   color: #1f2937;
   background-color: #ffffff;
+  font-weight: 500;
 }
 
 .table-cell input:hover {
@@ -316,19 +317,16 @@
 }
 
 .total-label {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 600;
-  color: #4b5563;
+  color: #1f2937;
 }
 
 .total-amount {
   font-size: 1.25rem;
   font-weight: bold;
   color: #1f2937;
-  background-color: #ffffff;
   padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  border: 1px solid #e5e7eb;
 }
 
 /* Add Item Section */
@@ -371,7 +369,7 @@
   font-size: 1.125rem;
   font-weight: 600;
   margin-bottom: 1rem;
-  color: #eab308;
+  color: #1f2937;
 }
 
 .print-instructions ul {
@@ -386,7 +384,8 @@
   gap: 0.5rem;
   margin-bottom: 0.75rem;
   font-size: 0.875rem;
-  color: #4b5563;
+  color: #1f2937;
+  font-weight: 500;
 }
 
 .print-instructions li:last-child {
@@ -424,4 +423,37 @@
   font-size: 0.75rem;
   color: #6b7280;
   font-weight: normal;
+}
+
+/* Button Colors */
+.button-save {
+  background-color: #059669 !important;
+}
+
+.button-save:hover {
+  background-color: #047857 !important;
+}
+
+.button-print {
+  background-color: #4f46e5 !important;
+}
+
+.button-print:hover {
+  background-color: #4338ca !important;
+}
+
+.button-delete {
+  background-color: #dc2626 !important;
+}
+
+.button-delete:hover {
+  background-color: #b91c1c !important;
+}
+
+.button-add {
+  background-color: #6366f1 !important;
+}
+
+.button-add:hover {
+  background-color: #4f46e5 !important;
 }
