@@ -218,7 +218,7 @@
 }
 
 .table-header {
-  background-color: #f3f4f6;
+  background-color: #e5e7eb;
 }
 
 .table-header th {
@@ -226,8 +226,8 @@
   text-align: right;
   font-size: 0.95rem;
   font-weight: 700;
-  color: #1f2937;
-  border-bottom: 1px solid #e5e7eb;
+  color: #111827;
+  border-bottom: 1px solid #d1d5db;
 }
 
 .table-row {
