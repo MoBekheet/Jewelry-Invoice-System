@@ -182,6 +182,11 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
           </tbody>
         </table>
       </div>
+
+      {/* Seller Name */}
+      <div style={{ position: 'absolute', bottom: '1cm', left: '1cm', width: '4.8cm', textAlign: 'center' }}>
+        {invoiceData.sellerName || '---'}
+      </div>
     </div>
   );
 };

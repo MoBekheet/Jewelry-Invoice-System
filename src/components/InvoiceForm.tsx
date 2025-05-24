@@ -45,6 +45,7 @@ function InvoiceForm() {
     mobileNumber: '',
     date: new Date().toISOString().slice(0, 10),
     customerName: '',
+    sellerName: '',
     items: [createEmptyItem()],
     totalAmount: 0,
   });
@@ -448,6 +449,7 @@ function InvoiceForm() {
       mobileNumber: '',
       date: new Date().toISOString().slice(0, 10),
       customerName: '',
+      sellerName: '',
       items: [createEmptyItem()],
       totalAmount: 0,
     });
@@ -739,6 +741,20 @@ function InvoiceForm() {
             value={invoiceData.customerName}
             onChange={handleInputChange}
             className={`form-input${isFieldMissing(null, 'customerName') ? ' input-error' : ''}`}
+            style={{ height: '2.5rem' }}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="sellerName" className="form-label">
+            اسم البائع
+          </label>
+          <input
+            id="sellerName"
+            name="sellerName"
+            type="text"
+            value={invoiceData.sellerName}
+            onChange={handleInputChange}
+            className={`form-input${isFieldMissing(null, 'sellerName') ? ' input-error' : ''}`}
             style={{ height: '2.5rem' }}
           />
         </div>

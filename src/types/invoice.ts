@@ -45,6 +45,7 @@ export interface InvoiceData {
   mobileNumber: string;
   date: string;
   customerName: string;
+  sellerName: string;
   items: InvoiceItem[];
   totalAmount: number;
   formattedTotalAmount?: string;
