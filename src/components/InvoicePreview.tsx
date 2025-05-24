@@ -1,5 +1,5 @@
 import React from 'react';
-import { InvoiceData } from '../types/invoice';
+import {InvoiceData} from '../types/invoice';
 import '../styles/print.css';
 
 interface InvoicePreviewProps {
@@ -35,11 +35,10 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
     const formattedNumber = parts.length > 1 ? `${integerPart}.${parts[1]}` : integerPart;
     
     // Convert the formatted number string (with Arabic commas and English decimal point) to Arabic numerals
-    const arabicFormattedNumber = formattedNumber.replace(/[0-9]/g, (d) =>
-       String(['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'][parseInt(d)])
-    ); // Arabic digits
-
-    return arabicFormattedNumber;
+     // Arabic digits
+    return formattedNumber.replace(/[0-9]/g, (d) =>
+        String(['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'][parseInt(d)])
+    );
   };
 
   const formatDate = (dateString: string) => {
