@@ -476,11 +476,39 @@ function InvoiceForm() {
   // Function to format number with thousand separators
   const formatNumber = (value: string | number): string => {
     if (!value) return '';
-    const stringValue = value.toString().replace(/,/g, '');
+    const stringValue = value.toString().replace(/,/g, '').replace(/،/g, ''); // Remove any commas (English or Arabic)
+
+    // Check if the cleaned value is a valid number before formatting
+    // Return original if not a valid number for parsing, allowing flexible input during typing.
+    if (isNaN(parseFloat(stringValue))) return String(value);
+
+    // Split into integer and decimal parts
     const parts = stringValue.split('.');
-    const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    const formattedNumber = parts.length > 1 ? `${integerPart}.${parts[1]}` : integerPart;
-    return toArabicNumerals(formattedNumber);
+    const integerPart = parts[0];
+    let decimalPart = parts.length > 1 ? parts[1] : '';
+
+    // Limit decimal part to 2 digits for display
+    if (decimalPart.length > 2) {
+        decimalPart = decimalPart.substring(0, 2);
+    }
+
+    // Format the integer part with Arabic thousand separators
+    const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '،'); // Use Arabic comma
+
+    // Convert the formatted integer part to Arabic numerals
+    const arabicFormattedIntegerPart = formattedIntegerPart.replace(/[0-9]/g, (d) =>
+       String(['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'][parseInt(d)])
+    ); // Arabic digits
+
+    // Convert the decimal part to Arabic numerals without further formatting or truncation
+    const arabicFormattedDecimalPart = decimalPart.replace(/[0-9]/g, (d) =>
+        String(['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'][parseInt(d)])
+    ); // Arabic digits
+
+    // Combine the formatted parts. Include decimal point only if a decimal part was present in the original stringValue.
+    const arabicFormattedNumber = parts.length > 1 ? `${arabicFormattedIntegerPart}.${arabicFormattedDecimalPart}` : arabicFormattedIntegerPart;
+
+    return arabicFormattedNumber;
   };
 
   // Function to format display value (with decimal places)

@@ -4,8 +4,11 @@ import { InvoiceItem } from '../types/invoice';
  * Calculate the total for a single invoice row
  */
 export const calculateRowTotal = (item: InvoiceItem): number => {
-  // Return the value as is without any calculations
-  return parseFloat(item.value.pound) || 0;
+  // Remove any thousand separators and convert to English numerals before parsing
+  const poundValue = parseFloat(item.value.pound.replace(/,/g, '').replace(/،/g, '')) || 0;
+  const piasterValue = parseFloat(item.value.piaster.replace(/,/g, '').replace(/،/g, '')) || 0;
+  // Convert piasters to pounds and add to pound value
+  return poundValue + (piasterValue / 100);
 };
 
 /**
@@ -13,9 +16,11 @@ export const calculateRowTotal = (item: InvoiceItem): number => {
  */
 export const calculateInvoiceTotal = (items: InvoiceItem[]): number => {
   const total = items.reduce((sum, item) => {
-    const valuePound = parseFloat(item.value.pound) || 0;
-    const taxAmount = item.hasTax ? (parseFloat(item.tax.amount) || 0) : 0;
-    return sum + valuePound + taxAmount;
+    // Use the updated calculateRowTotal to get the item's value including piasters
+    const itemValue = calculateRowTotal(item);
+    // Remove any thousand separators and convert to English numerals before parsing tax amount
+    const taxAmount = item.hasTax ? (parseFloat(item.tax.amount.replace(/,/g, '').replace(/،/g, '')) || 0) : 0;
+    return sum + itemValue + taxAmount;
   }, 0);
   return total;
 };
