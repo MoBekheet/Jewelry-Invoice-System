@@ -455,28 +455,40 @@ function InvoiceForm() {
     return formatNumber(formattedValue);
   };
 
-  // Function to format input value for display
+  // Function to format input value for display with Arabic numerals and thousand separators
   const formatInputValue = (value: string | number | undefined | null): string => {
     if (value === null || value === undefined || value === '') return '';
     const stringValue = String(value).replace(/,/g, '').replace(/،/g, ''); // Remove any commas (English or Arabic)
 
     // Check if the cleaned value is a valid number before formatting
-    if (isNaN(parseFloat(stringValue))) return String(value); // Return original if not a valid number for parsing
+    // Return original if not a valid number for parsing, allowing flexible input during typing.
+    if (isNaN(parseFloat(stringValue))) return String(value);
 
-    // Convert Arabic numerals to English temporarily for standard number formatting
-    const englishValue = stringValue.replace(/[٠-٩]/g, (d) =>
-      String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-    );
+    // Split into integer and decimal parts
+    const parts = stringValue.split('.');
+    const integerPart = parts[0];
+    let decimalPart = parts.length > 1 ? parts[1] : '';
 
-    // Format the number with English thousand separators first
-    const parts = englishValue.split('.');
-    const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Use English comma for internal formatting
-    const formattedEnglishNumber = parts.length > 1 ? `${integerPart}.${parts[1]}` : integerPart;
+    // Limit decimal part to 2 digits for display
+    if (decimalPart.length > 2) {
+        decimalPart = decimalPart.substring(0, 2);
+    }
 
-    // Convert the formatted English number string (with English commas) back to Arabic numerals and replace English comma with Arabic comma
-    const arabicFormattedNumber = formattedEnglishNumber.replace(/[0-9]/g, (d) =>
+    // Format the integer part with Arabic thousand separators
+    const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '،'); // Use Arabic comma
+
+    // Convert the formatted integer part to Arabic numerals
+    const arabicFormattedIntegerPart = formattedIntegerPart.replace(/[0-9]/g, (d) =>
        String(['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'][parseInt(d)])
-    ).replace(/,/g, '،'); // Replace English comma with Arabic comma
+    ); // Arabic digits
+
+    // Convert the decimal part to Arabic numerals without further formatting or truncation
+    const arabicFormattedDecimalPart = decimalPart.replace(/[0-9]/g, (d) =>
+        String(['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'][parseInt(d)])
+    ); // Arabic digits
+
+    // Combine the formatted parts. Include decimal point only if a decimal part was present in the original stringValue.
+    const arabicFormattedNumber = parts.length > 1 ? `${arabicFormattedIntegerPart}.${arabicFormattedDecimalPart}` : arabicFormattedIntegerPart;
 
     return arabicFormattedNumber;
   };
@@ -484,7 +496,8 @@ function InvoiceForm() {
   // Function to handle numeric input change
   const handleNumericInputChange = (itemId: string, field: string, value: string) => {
     // Remove any existing formatting (commas, Arabic numerals) and get a clean English number string for calculations
-    const cleanEnglishValue = value.replace(/,/g, '').replace(/،/g, '').replace(/[٠-٩]/g, (d) => 
+    // For value.pound and value.piaster, we will store the cleaned value directly.
+    const cleanValue = value.replace(/,/g, '').replace(/،/g, '').replace(/[٠-٩]/g, (d) => 
       String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
     );
 
@@ -492,23 +505,32 @@ function InvoiceForm() {
       if (item.id === itemId) {
         const newItem = { ...item };
 
-        // Update the specific field in the state with the cleaned English value
+        // Update the specific field in the state with the cleaned value
         if (field === 'weight.grams') {
-          newItem.weight.grams = cleanEnglishValue;
+          newItem.weight.grams = cleanValue;
         } else if (field === 'weight.milligrams') {
-          newItem.weight.milligrams = cleanEnglishValue;
+          newItem.weight.milligrams = cleanValue;
         } else if (field === 'value.pound') {
-           // Allow direct input for value pound, store as clean English string
-          newItem.value.pound = cleanEnglishValue;
+           // Allow direct input for value pound
+           // Check and prevent input if more than two decimal places
+           const parts = cleanValue.split('.');
+           if (parts.length > 1 && parts[1].length > 2) {
+             // If more than 2 decimal places, do not update the state for this field
+             // The field's value will remain the previous valid state value via formatInputValue
+             // No assignment to newItem.value.pound here
+           } else {
+             // Otherwise, store the cleaned value
+             newItem.value.pound = cleanValue;
+           }
         } else if (field === 'value.piaster') {
-           // Allow direct input for value piaster, store as clean English string
-          newItem.value.piaster = cleanEnglishValue;
+           // Store cleaned value directly, no specific decimal handling here
+          newItem.value.piaster = cleanValue;
         } else if (field === 'price.pound') {
-          newItem.price.pound = cleanEnglishValue;
+          newItem.price.pound = cleanValue;
         } else if (field === 'price.piaster') {
-          newItem.price.piaster = cleanEnglishValue;
+          newItem.price.piaster = cleanValue;
         } else if (field === 'karat') {
-          newItem.karat = cleanEnglishValue;
+          newItem.karat = cleanValue;
         }
 
         return newItem;
@@ -517,6 +539,7 @@ function InvoiceForm() {
     });
 
     // Calculate new total amount based on the potentially updated items in English string format
+    // Note: calculateInvoiceTotal needs to handle the English string values correctly.
     const totalAmount = calculateInvoiceTotal(newItems);
 
     setInvoiceData(prev => ({
@@ -768,7 +791,7 @@ function InvoiceForm() {
                     className={`form-input${isFieldMissing(item, 'value.pound') ? ' input-error' : ''}`}
                     placeholder="القيمة"
                     inputMode="decimal"
-                    maxLength={8}
+                    maxLength={15}
                     onFocus={(e) => e.target.select()}
                   />
                 </td>
