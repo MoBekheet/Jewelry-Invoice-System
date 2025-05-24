@@ -95,13 +95,13 @@ function InvoiceForm() {
           return {
             ...item,
             weight: {
-              grams: formatInputValue(item.weight.grams, false),
-              milligrams: formatInputValue(item.weight.milligrams, true)
+              grams: formatInputValue(item.weight.grams),
+              milligrams: formatInputValue(item.weight.milligrams)
             },
-            karat: formatInputValue(item.karat, false),
+            karat: formatInputValue(item.karat),
             price: {
-              pound: formatInputValue(item.price.pound, false),
-              piaster: formatInputValue(item.price.piaster, true)
+              pound: formatInputValue(item.price.pound),
+              piaster: formatInputValue(item.price.piaster)
             },
             total
           };
@@ -144,10 +144,24 @@ function InvoiceForm() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name === 'mobileNumber') {
-      // Convert to Arabic numerals
-      const arabicValue = value.replace(/[0-9]/g, (d) => 
+      // First convert any Arabic numerals to English
+      const englishValue = value.replace(/[٠-٩]/g, (d) => 
+        String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+      );
+      
+      // Remove any characters that are not numbers or +
+      let sanitizedValue = englishValue.replace(/[^0-9+]/g, '');
+      
+      // Ensure + is only at the start
+      if (sanitizedValue.includes('+')) {
+        sanitizedValue = '+' + sanitizedValue.replace(/\+/g, '');
+      }
+      
+      // Finally convert back to Arabic numerals
+      const arabicValue = sanitizedValue.replace(/[0-9]/g, (d) => 
         String(['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'][parseInt(d)])
       );
+      
       setInvoiceData({
         ...invoiceData,
         [name]: arabicValue,
@@ -442,48 +456,90 @@ function InvoiceForm() {
   };
 
   // Function to format input value for display
-  const formatInputValue = (value: string, isDecimal: boolean): string => {
-    if (!value) return '';
-    const cleanValue = value.replace(/,/g, '');
-    return isDecimal ? toArabicNumerals(cleanValue) : formatNumber(cleanValue);
+  const formatInputValue = (value: string | number | undefined | null): string => {
+    if (value === null || value === undefined || value === '') return '';
+    const stringValue = String(value).replace(/,/g, '').replace(/،/g, ''); // Remove any commas (English or Arabic)
+
+    // Check if the cleaned value is a valid number before formatting
+    if (isNaN(parseFloat(stringValue))) return String(value); // Return original if not a valid number for parsing
+
+    // Convert Arabic numerals to English temporarily for standard number formatting
+    const englishValue = stringValue.replace(/[٠-٩]/g, (d) =>
+      String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+    );
+
+    // Format the number with English thousand separators first
+    const parts = englishValue.split('.');
+    const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Use English comma for internal formatting
+    const formattedEnglishNumber = parts.length > 1 ? `${integerPart}.${parts[1]}` : integerPart;
+
+    // Convert the formatted English number string (with English commas) back to Arabic numerals and replace English comma with Arabic comma
+    const arabicFormattedNumber = formattedEnglishNumber.replace(/[0-9]/g, (d) =>
+       String(['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'][parseInt(d)])
+    ).replace(/,/g, '،'); // Replace English comma with Arabic comma
+
+    return arabicFormattedNumber;
   };
 
   // Function to handle numeric input change
   const handleNumericInputChange = (itemId: string, field: string, value: string) => {
+    // Remove any existing formatting (commas, Arabic numerals) and get a clean English number string for calculations
+    const cleanEnglishValue = value.replace(/,/g, '').replace(/،/g, '').replace(/[٠-٩]/g, (d) => 
+      String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+    );
+
     const newItems = invoiceData.items.map(item => {
       if (item.id === itemId) {
         const newItem = { ...item };
-        const [parent, child] = field.split('.');
-        
-        if (child) {
-          if (parent === 'weight') {
-            newItem.weight = {
-              ...newItem.weight,
-              [child]: value
-            };
-          } else if (parent === 'value') {
-            newItem.value = {
-              ...newItem.value,
-              [child]: value
-            };
-          } else if (parent === 'price') {
-            newItem.price = {
-              ...newItem.price,
-              [child]: value
-            };
-          }
-        } else {
-          if (field === 'karat') {
-            newItem.karat = value;
-          }
+
+        // Update the specific field in the state with the cleaned English value
+        if (field === 'weight.grams') {
+          newItem.weight.grams = cleanEnglishValue;
+        } else if (field === 'weight.milligrams') {
+          newItem.weight.milligrams = cleanEnglishValue;
+        } else if (field === 'value.pound') {
+           // Allow direct input for value pound, store as clean English string
+          newItem.value.pound = cleanEnglishValue;
+        } else if (field === 'value.piaster') {
+           // Allow direct input for value piaster, store as clean English string
+          newItem.value.piaster = cleanEnglishValue;
+        } else if (field === 'price.pound') {
+          newItem.price.pound = cleanEnglishValue;
+        } else if (field === 'price.piaster') {
+          newItem.price.piaster = cleanEnglishValue;
+        } else if (field === 'karat') {
+          newItem.karat = cleanEnglishValue;
         }
+
+        // Recalculate the value based on weight and price if these fields change
+        // Do NOT recalculate if value.pound or value.piaster are changed directly
+        if (field.startsWith('weight') || field.startsWith('price')) {
+             const weightGrams = parseFloat(newItem.weight.grams) || 0;
+             const weightMilligrams = parseFloat(newItem.weight.milligrams) || 0;
+             const totalWeight = weightGrams + (weightMilligrams / 1000);
+
+             const pricePound = parseFloat(newItem.price.pound) || 0;
+             const pricePiaster = parseFloat(newItem.price.piaster) || 0;
+             const totalPrice = pricePound + (pricePiaster / 100);
+
+             const totalValue = totalWeight * totalPrice;
+             const valuePound = Math.floor(totalValue);
+             const valuePiaster = Math.round((totalValue - valuePound) * 100);
+
+             // Update the calculated value fields in the state with English string format
+             newItem.value = {
+               pound: valuePound.toString(),
+               piaster: valuePiaster.toString().padStart(2, '0')
+             };
+        }
+        // Note: Karat change does not trigger value recalculation based on existing code structure
 
         return newItem;
       }
       return item;
     });
 
-    // Calculate new total amount
+    // Calculate new total amount based on the potentially updated items in English string format
     const totalAmount = calculateInvoiceTotal(newItems);
 
     setInvoiceData(prev => ({
@@ -589,7 +645,8 @@ function InvoiceForm() {
             onChange={handleInputChange}
             className={`form-input${isFieldMissing(null, 'mobileNumber') ? ' input-error' : ''}`}
             placeholder="رقم الموبايل"
-            inputMode="numeric"
+            inputMode="tel"
+            dir="ltr"
             style={{ height: '2.5rem' }}
           />
         </div>
@@ -670,7 +727,7 @@ function InvoiceForm() {
                   <div className="input-group">
                     <input
                       type="text"
-                      value={formatInputValue(item.price.pound, false)}
+                      value={formatInputValue(item.price.pound)}
                       onChange={(e) => handleNumericInputChange(item.id, 'price.pound', e.target.value)}
                       className={`form-input${isFieldMissing(item, 'price.pound') ? ' input-error' : ''}`}
                       placeholder="جنيه"
@@ -680,7 +737,7 @@ function InvoiceForm() {
                     />
                     <input
                       type="text"
-                      value={formatInputValue(item.price.piaster, true)}
+                      value={formatInputValue(item.price.piaster)}
                       onChange={(e) => handleNumericInputChange(item.id, 'price.piaster', e.target.value)}
                       className="form-input"
                       placeholder="قرش"
@@ -693,7 +750,7 @@ function InvoiceForm() {
                 <td className="table-cell">
                   <input
                     type="text"
-                    value={formatInputValue(item.karat, false)}
+                    value={formatInputValue(item.karat)}
                     onChange={(e) => handleNumericInputChange(item.id, 'karat', e.target.value)}
                     className={`form-input${isFieldMissing(item, 'karat') ? ' input-error' : ''}`}
                     placeholder="عيار"
@@ -706,7 +763,7 @@ function InvoiceForm() {
                   <div className="input-group">
                     <input
                       type="text"
-                      value={formatInputValue(item.weight.grams, false)}
+                      value={formatInputValue(item.weight.grams)}
                       onChange={(e) => handleNumericInputChange(item.id, 'weight.grams', e.target.value)}
                       className={`form-input${isFieldMissing(item, 'weight.grams') ? ' input-error' : ''}`}
                       placeholder="جرام"
@@ -716,7 +773,7 @@ function InvoiceForm() {
                     />
                     <input
                       type="text"
-                      value={formatInputValue(item.weight.milligrams, true)}
+                      value={formatInputValue(item.weight.milligrams)}
                       onChange={(e) => handleNumericInputChange(item.id, 'weight.milligrams', e.target.value)}
                       className="form-input"
                       placeholder="مللي"
@@ -729,7 +786,7 @@ function InvoiceForm() {
                 <td className="table-cell">
                   <input
                     type="text"
-                    value={formatInputValue(item.value.pound, false)}
+                    value={formatInputValue(item.value.pound)}
                     onChange={(e) => handleNumericInputChange(item.id, 'value.pound', e.target.value)}
                     className={`form-input${isFieldMissing(item, 'value.pound') ? ' input-error' : ''}`}
                     placeholder="القيمة"
