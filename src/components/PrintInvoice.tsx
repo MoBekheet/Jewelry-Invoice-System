@@ -106,56 +106,76 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
           <tbody>
             {invoiceData.items.map((item, index) => {
               return (
-                <tr key={index} style={{ height: '0.65cm' }}>
-                  {/* Total Value (Displaying combined Value Pound and Value Piaster) */}
-                  <td style={{ width: '2.3cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
-                    {/* Format and display the combined value */}
-                    {/* Check if piaster value is non-zero before appending decimal part */}
-                    {`${formatNumberWithArabicThousands(item.value.pound)}${item.value.piaster && parseFloat(toEnglishNumerals(item.value.piaster)) > 0 ? '.' + formatNumberWithArabicThousands(item.value.piaster) : ''}`}
-                  </td>
-                  
-                  {/* Weight in Milligrams */}
-                  <td style={{ width: '1.1cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
-                    {formatNumberWithArabicThousands(item.weight.milligrams)}
-                  </td>
+                <React.Fragment key={index}>
+                  <tr style={{ height: '0.65cm' }}>
+                    {/* Total Value (Displaying combined Value Pound and Value Piaster) */}
+                    <td style={{ width: '2.3cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
+                      {/* Format and display the combined value */}
+                      {/* Check if piaster value is non-zero before appending decimal part */}
+                      {`${formatNumberWithArabicThousands(item.value.pound)}${item.value.piaster && parseFloat(toEnglishNumerals(item.value.piaster)) > 0 ? '.' + formatNumberWithArabicThousands(item.value.piaster) : ''}`}
+                    </td>
+                    
+                    {/* Weight in Milligrams */}
+                    <td style={{ width: '1.1cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
+                      {formatNumberWithArabicThousands(item.weight.milligrams)}
+                    </td>
 
-                  {/* Weight in Grams */}
-                  <td style={{ width: '1.6cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
-                    {formatNumberWithArabicThousands(item.weight.grams)}
-                  </td>
-                  
-                  {/* Karat */}
-                  <td style={{ width: '1.1cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
-                    {formatNumberWithArabicThousands(item.karat)}
-                  </td>
-                  
-                  {/* Price in Piasters */}
-                  <td style={{ width: '1.1cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
-                    {formatNumberWithArabicThousands(item.price.piaster)}
-                  </td>
-                  
-                  {/* Price in Pounds */}
-                  <td style={{ width: '1.5cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
-                    {formatNumberWithArabicThousands(item.price.pound)}
-                  </td>
-                  
-                  {/* Description */}
-                  <td style={{ width: '5cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
-                    {item.description || ''}
-                  </td>
-                </tr>
+                    {/* Weight in Grams */}
+                    <td style={{ width: '1.6cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
+                      {formatNumberWithArabicThousands(item.weight.grams)}
+                    </td>
+                    
+                    {/* Karat */}
+                    <td style={{ width: '1.1cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
+                      {formatNumberWithArabicThousands(item.karat)}
+                    </td>
+                    
+                    {/* Price in Piasters */}
+                    <td style={{ width: '1.1cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
+                      {formatNumberWithArabicThousands(item.price.piaster)}
+                    </td>
+                    
+                    {/* Price in Pounds */}
+                    <td style={{ width: '1.5cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
+                      {formatNumberWithArabicThousands(item.price.pound)}
+                    </td>
+                    
+                    {/* Description */}
+                    <td style={{ width: '5cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
+                      {item.description || ''}
+                    </td>
+                  </tr>
+                  {item.hasTax && (
+                    <tr style={{ height: '0.65cm', backgroundColor: '#f8f8f8' }}>
+                      <td style={{ width: '2.3cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>&nbsp;</td>
+                      <td colSpan={4} style={{ 
+                        width: '4.9cm', 
+                        textAlign: 'end', 
+                        fontSize: '14px', 
+                        fontWeight: 700,
+                        verticalAlign: 'middle',
+                        wordWrap: 'break-word',
+                        whiteSpace: 'normal',
+                        maxWidth: '4.9cm',
+                        padding: '0 0.1cm',
+                      }}>{item.taxNote}</td>
+                      <td style={{ width: '1.5cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>{formatNumberWithArabicThousands(item.tax.amount)}</td>
+                      <td style={{ width: '5cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>&nbsp;</td>
+                    </tr>
+                  )}
+                </React.Fragment>
               );
             })}
 
             {/* Empty Rows */}
             {Array(18 - invoiceData.items.length).fill(0).map((_, index) => (
               <tr key={`empty-${index}`} style={{ height: '0.65cm' }}>
-                <td style={{ width: '2.0cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
+                <td style={{ width: '2.3cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
+                <td style={{ width: '1.1cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
                 <td style={{ width: '1.6cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
-                <td style={{ width: '1.6cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
-                <td style={{ width: '1.8cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
-                <td style={{ width: '1.2cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
-                <td style={{ width: '1.6cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
+                <td style={{ width: '1.1cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
+                <td style={{ width: '1.1cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
+                <td style={{ width: '1.5cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
                 <td style={{ width: '5.2cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
               </tr>
             ))}

@@ -15,6 +15,12 @@ export interface InvoiceItem {
     piaster: string;
   };
   total: number;
+  // Tax related fields
+  hasTax: boolean;
+  tax: {
+    amount: string;
+  };
+  taxNote: string;
   // Formatted values for display
   formattedWeight?: {
     grams: string;
@@ -30,6 +36,9 @@ export interface InvoiceItem {
     piaster: string;
   };
   formattedTotal?: string;
+  formattedTax?: {
+    amount: string;
+  };
 }
 
 export interface InvoiceData {

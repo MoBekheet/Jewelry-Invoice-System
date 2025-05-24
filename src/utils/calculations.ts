@@ -4,38 +4,8 @@ import { InvoiceItem } from '../types/invoice';
  * Calculate the total for a single invoice row
  */
 export const calculateRowTotal = (item: InvoiceItem): number => {
-  // Convert string inputs to numbers
-  const weightGrams = parseFloat(item.weight.grams.replace(/[٠-٩]/g, (d) => 
-    String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-  )) || 0;
-  
-  const weightMilligrams = parseFloat(item.weight.milligrams.replace(/[٠-٩]/g, (d) => 
-    String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-  )) || 0;
-  
-  const pricePound = parseFloat(item.price.pound.replace(/[٠-٩]/g, (d) => 
-    String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-  )) || 0;
-  
-  const pricePiaster = parseFloat(item.price.piaster.replace(/[٠-٩]/g, (d) => 
-    String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-  )) || 0;
-
-  const valuePound = parseFloat(item.value.pound.replace(/[٠-٩]/g, (d) => 
-    String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-  )) || 0;
-
-  // Convert milligrams to grams (1000 mg = 1 g)
-  const totalWeight = weightGrams + (weightMilligrams / 1000);
-  
-  // Convert piasters to pounds (100 piasters = 1 pound)
-  const totalPrice = pricePound + (pricePiaster / 100);
-  
-  // Calculate total (weight * price + value)
-  const total = (totalWeight * totalPrice) + valuePound;
-  
-  // Round to 2 decimal places
-  return Math.round(total * 100) / 100;
+  // Return the value as is without any calculations
+  return parseFloat(item.value.pound) || 0;
 };
 
 /**
@@ -43,19 +13,18 @@ export const calculateRowTotal = (item: InvoiceItem): number => {
  */
 export const calculateInvoiceTotal = (items: InvoiceItem[]): number => {
   const total = items.reduce((sum, item) => {
-    const valuePound = parseFloat(item.value.pound.replace(/[٠-٩]/g, (d) => 
-      String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-    )) || 0;
-    return sum + valuePound;
+    const valuePound = parseFloat(item.value.pound) || 0;
+    const taxAmount = item.hasTax ? (parseFloat(item.tax.amount) || 0) : 0;
+    return sum + valuePound + taxAmount;
   }, 0);
-  return Math.round(total * 100) / 100;
+  return total;
 };
 
 /**
  * Format a number as currency
  */
 export const formatCurrency = (amount: number): string => {
-  return amount.toFixed(2);
+  return amount.toString();
 };
 
 /**

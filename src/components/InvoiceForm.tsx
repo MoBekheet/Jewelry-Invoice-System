@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Printer, Save, Trash2, Plus
+  Printer, Save, Trash2, Plus, Receipt
 } from 'lucide-react';
 import InvoicePreview from './PrintInvoice';
 import Modal from './Modal';
@@ -85,7 +85,13 @@ function InvoiceForm() {
             price: {
               pound: englishPricePound,
               piaster: englishPricePiaster
-            }
+            },
+            // Initialize tax fields if they don't exist
+            hasTax: item.hasTax || false,
+            tax: item.tax || {
+              amount: '0'
+            },
+            taxNote: item.taxNote || ''
           };
 
           // Calculate total using the temporary item
@@ -103,6 +109,11 @@ function InvoiceForm() {
               pound: formatInputValue(item.price.pound),
               piaster: formatInputValue(item.price.piaster)
             },
+            hasTax: item.hasTax || false,
+            tax: {
+              amount: formatInputValue(item.tax?.amount || '0')
+            },
+            taxNote: item.taxNote || '',
             total
           };
         });
@@ -138,6 +149,28 @@ function InvoiceForm() {
         piaster: '0',
       },
       total: 0,
+      hasTax: false,
+      tax: {
+        amount: '0'
+      },
+      taxNote: '',
+      formattedWeight: {
+        grams: '0',
+        milligrams: '0',
+      },
+      formattedKarat: '0',
+      formattedValue: {
+        pound: '0',
+        piaster: '0',
+      },
+      formattedPrice: {
+        pound: '0',
+        piaster: '0',
+      },
+      formattedTotal: '0',
+      formattedTax: {
+        amount: '0'
+      }
     };
   }
 
@@ -180,10 +213,10 @@ function InvoiceForm() {
   };
 
   const handleItemChange = (id: string, field: string, value: string) => {
-    if (field === 'description') {
+    if (field === 'description' || field === 'taxNote') {
       const updatedItems = invoiceData.items.map(item => {
         if (item.id === id) {
-          return { ...item, description: value };
+          return { ...item, [field]: value };
         }
         return item;
       });
@@ -496,9 +529,8 @@ function InvoiceForm() {
 
   // Function to handle numeric input change
   const handleNumericInputChange = (itemId: string, field: string, value: string) => {
-    // Remove any existing formatting (commas, Arabic numerals) and get a clean English number string for calculations
-    // For value.pound and value.piaster, we will store the cleaned value directly.
-    const cleanValue = value.replace(/,/g, '').replace(/،/g, '').replace(/[٠-٩]/g, (d) => 
+    // Convert any Arabic numerals to English for internal consistency
+    const englishValue = value.replace(/[٠-٩]/g, (d) => 
       String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
     );
 
@@ -506,32 +538,23 @@ function InvoiceForm() {
       if (item.id === itemId) {
         const newItem = { ...item };
 
-        // Update the specific field in the state with the cleaned value
+        // Update the specific field with the standardized (English) value
         if (field === 'weight.grams') {
-          newItem.weight.grams = cleanValue;
+          newItem.weight.grams = englishValue;
         } else if (field === 'weight.milligrams') {
-          newItem.weight.milligrams = cleanValue;
+          newItem.weight.milligrams = englishValue;
         } else if (field === 'value.pound') {
-           // Allow direct input for value pound
-           // Check and prevent input if more than two decimal places
-           const parts = cleanValue.split('.');
-           if (parts.length > 1 && parts[1].length > 2) {
-             // If more than 2 decimal places, do not update the state for this field
-             // The field's value will remain the previous valid state value via formatInputValue
-             // No assignment to newItem.value.pound here
-           } else {
-             // Otherwise, store the cleaned value
-             newItem.value.pound = cleanValue;
-           }
+          newItem.value.pound = englishValue;
         } else if (field === 'value.piaster') {
-           // Store cleaned value directly, no specific decimal handling here
-          newItem.value.piaster = cleanValue;
+          newItem.value.piaster = englishValue;
         } else if (field === 'price.pound') {
-          newItem.price.pound = cleanValue;
+          newItem.price.pound = englishValue;
         } else if (field === 'price.piaster') {
-          newItem.price.piaster = cleanValue;
+          newItem.price.piaster = englishValue;
         } else if (field === 'karat') {
-          newItem.karat = cleanValue;
+          newItem.karat = englishValue;
+        } else if (field === 'tax.amount') {
+          newItem.tax.amount = englishValue;
         }
 
         return newItem;
@@ -539,15 +562,25 @@ function InvoiceForm() {
       return item;
     });
 
-    // Calculate new total amount based on the potentially updated items in English string format
-    // Note: calculateInvoiceTotal needs to handle the English string values correctly.
-    const totalAmount = calculateInvoiceTotal(newItems);
-
     setInvoiceData(prev => ({
       ...prev,
       items: newItems,
-      totalAmount
+      totalAmount: calculateInvoiceTotal(newItems)
     }));
+  };
+
+  const toggleTax = (id: string) => {
+    const updatedItems = invoiceData.items.map(item => {
+      if (item.id === id) {
+        return { ...item, hasTax: !item.hasTax };
+      }
+      return item;
+    });
+
+    setInvoiceData({
+      ...invoiceData,
+      items: updatedItems
+    });
   };
 
   return (
@@ -712,100 +745,140 @@ function InvoiceForm() {
           </thead>
           <tbody>
             {invoiceData.items.map((item) => (
-              <tr key={item.id} className="table-row">
-                <td className="table-cell">
-                  <input
-                    type="text"
-                    value={item.description}
-                    onChange={(e) => handleItemChange(item.id, 'description', e.target.value)}
-                    className={`form-input${isFieldMissing(item, 'description') ? ' input-error' : ''}`}
-                    placeholder="وصف الصنف"
-                    data-item-id={item.id}
-                    onFocus={(e) => e.target.select()}
-                  />
-                </td>
-                <td className="table-cell">
-                  <div className="input-group">
+              <React.Fragment key={item.id}>
+                <tr className="table-row">
+                  <td className="table-cell">
                     <input
                       type="text"
-                      value={formatInputValue(item.price.pound)}
-                      onChange={(e) => handleNumericInputChange(item.id, 'price.pound', e.target.value)}
-                      className={`form-input${isFieldMissing(item, 'price.pound') ? ' input-error' : ''}`}
-                      placeholder="جنيه"
+                      value={item.description}
+                      onChange={(e) => handleItemChange(item.id, 'description', e.target.value)}
+                      className={`form-input${isFieldMissing(item, 'description') ? ' input-error' : ''}`}
+                      placeholder="وصف الصنف"
+                      data-item-id={item.id}
+                      onFocus={(e) => e.target.select()}
+                    />
+                  </td>
+                  <td className="table-cell">
+                    <div className="input-group">
+                      <input
+                        type="text"
+                        value={formatInputValue(item.price.pound)}
+                        onChange={(e) => handleNumericInputChange(item.id, 'price.pound', e.target.value)}
+                        className={`form-input${isFieldMissing(item, 'price.pound') ? ' input-error' : ''}`}
+                        placeholder="جنيه"
+                        inputMode="decimal"
+                        maxLength={8}
+                        onFocus={(e) => e.target.select()}
+                      />
+                      <input
+                        type="text"
+                        value={formatInputValue(item.price.piaster)}
+                        onChange={(e) => handleNumericInputChange(item.id, 'price.piaster', e.target.value)}
+                        className="form-input"
+                        placeholder="قرش"
+                        inputMode="decimal"
+                        maxLength={2}
+                        onFocus={(e) => e.target.select()}
+                      />
+                    </div>
+                  </td>
+                  <td className="table-cell">
+                    <input
+                      type="text"
+                      value={formatInputValue(item.karat)}
+                      onChange={(e) => handleNumericInputChange(item.id, 'karat', e.target.value)}
+                      className={`form-input${isFieldMissing(item, 'karat') ? ' input-error' : ''}`}
+                      placeholder="عيار"
                       inputMode="decimal"
                       maxLength={8}
                       onFocus={(e) => e.target.select()}
                     />
+                  </td>
+                  <td className="table-cell">
+                    <div className="input-group">
+                      <input
+                        type="text"
+                        value={formatInputValue(item.weight.grams)}
+                        onChange={(e) => handleNumericInputChange(item.id, 'weight.grams', e.target.value)}
+                        className={`form-input${isFieldMissing(item, 'weight.grams') ? ' input-error' : ''}`}
+                        placeholder="جرام"
+                        inputMode="decimal"
+                        maxLength={8}
+                        onFocus={(e) => e.target.select()}
+                      />
+                      <input
+                        type="text"
+                        value={formatInputValue(item.weight.milligrams)}
+                        onChange={(e) => handleNumericInputChange(item.id, 'weight.milligrams', e.target.value)}
+                        className="form-input"
+                        placeholder="مللي"
+                        inputMode="decimal"
+                        maxLength={2}
+                        onFocus={(e) => e.target.select()}
+                      />
+                    </div>
+                  </td>
+                  <td className="table-cell">
                     <input
                       type="text"
-                      value={formatInputValue(item.price.piaster)}
-                      onChange={(e) => handleNumericInputChange(item.id, 'price.piaster', e.target.value)}
-                      className="form-input"
-                      placeholder="قرش"
+                      value={formatInputValue(item.value.pound)}
+                      onChange={(e) => handleNumericInputChange(item.id, 'value.pound', e.target.value)}
+                      className={`form-input${isFieldMissing(item, 'value.pound') ? ' input-error' : ''}`}
+                      placeholder="القيمة"
                       inputMode="decimal"
-                      maxLength={2}
+                      maxLength={15}
                       onFocus={(e) => e.target.select()}
                     />
-                  </div>
-                </td>
-                <td className="table-cell">
-                  <input
-                    type="text"
-                    value={formatInputValue(item.karat)}
-                    onChange={(e) => handleNumericInputChange(item.id, 'karat', e.target.value)}
-                    className={`form-input${isFieldMissing(item, 'karat') ? ' input-error' : ''}`}
-                    placeholder="عيار"
-                    inputMode="decimal"
-                    maxLength={8}
-                    onFocus={(e) => e.target.select()}
-                  />
-                </td>
-                <td className="table-cell">
-                  <div className="input-group">
-                    <input
-                      type="text"
-                      value={formatInputValue(item.weight.grams)}
-                      onChange={(e) => handleNumericInputChange(item.id, 'weight.grams', e.target.value)}
-                      className={`form-input${isFieldMissing(item, 'weight.grams') ? ' input-error' : ''}`}
-                      placeholder="جرام"
-                      inputMode="decimal"
-                      maxLength={8}
-                      onFocus={(e) => e.target.select()}
-                    />
-                    <input
-                      type="text"
-                      value={formatInputValue(item.weight.milligrams)}
-                      onChange={(e) => handleNumericInputChange(item.id, 'weight.milligrams', e.target.value)}
-                      className="form-input"
-                      placeholder="مللي"
-                      inputMode="decimal"
-                      maxLength={2}
-                      onFocus={(e) => e.target.select()}
-                    />
-                  </div>
-                </td>
-                <td className="table-cell">
-                  <input
-                    type="text"
-                    value={formatInputValue(item.value.pound)}
-                    onChange={(e) => handleNumericInputChange(item.id, 'value.pound', e.target.value)}
-                    className={`form-input${isFieldMissing(item, 'value.pound') ? ' input-error' : ''}`}
-                    placeholder="القيمة"
-                    inputMode="decimal"
-                    maxLength={15}
-                    onFocus={(e) => e.target.select()}
-                  />
-                </td>
-                <td className="table-cell">
-                  <button 
-                    onClick={() => removeItem(item.id)}
-                    disabled={invoiceData.items.length <= 1}
-                    className="action-button"
-                  >
-                    <Trash2 size={18} />
-                  </button>
-                </td>
-              </tr>
+                  </td>
+                  <td className="table-cell">
+                    <div className="action-buttons">
+                      <button 
+                        onClick={() => toggleTax(item.id)}
+                        className={`action-button tax-button ${item.hasTax ? 'active' : ''}`}
+                        title={item.hasTax ? 'إزالة الضريبة' : 'إضافة ضريبة'}
+                      >
+                        {item.hasTax ? <Receipt size={18} /> : <Receipt size={18} />}
+                      </button>
+                      <button 
+                        onClick={() => removeItem(item.id)}
+                        disabled={invoiceData.items.length <= 1}
+                        className="action-button delete-button"
+                        title="حذف الصنف"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                {item.hasTax && (
+                  <tr className="table-row tax-row">
+                    <td className="table-cell">
+                      <input
+                        type="text"
+                        value={item.taxNote}
+                        onChange={(e) => handleItemChange(item.id, 'taxNote', e.target.value)}
+                        className="form-input"
+                        placeholder="ملحوظة الضريبة"
+                        style={{ fontSize: '0.9em' }}
+                      />
+                    </td>
+                    <td className="table-cell">
+                      <input
+                        type="text"
+                        value={formatInputValue(item.tax.amount)}
+                        onChange={(e) => handleNumericInputChange(item.id, 'tax.amount', e.target.value)}
+                        className="form-input"
+                        placeholder="قيمة الضريبة"
+                        inputMode="decimal"
+                        maxLength={10}
+                        style={{ fontSize: '0.9em' }}
+                        onFocus={(e) => e.target.select()}
+                      />
+                    </td>
+                    <td className="table-cell" colSpan={4}></td>
+                  </tr>
+                )}
+              </React.Fragment>
             ))}
           </tbody>
         </table>
@@ -929,6 +1002,52 @@ function InvoiceForm() {
             text-align: center;
             font-weight: 600;
             color: #ffffff;
+          }
+          .action-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+          }
+          .action-button {
+            padding: 6px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            min-width: 32px;
+            height: 32px;
+          }
+          .action-button:hover {
+            transform: scale(1.05);
+          }
+          .action-button.delete-button {
+            background-color: #fee2e2;
+            color: #dc2626;
+          }
+          .action-button.delete-button:hover {
+            background-color: #fecaca;
+          }
+          .action-button.tax-button {
+            background-color: #f0fdf4;
+            color: #16a34a;
+          }
+          .action-button.tax-button:hover {
+            background-color: #dcfce7;
+          }
+          .action-button.tax-button.active {
+            background-color: #16a34a;
+            color: white;
+            box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
+          }
+          .tax-row {
+            background-color: #f8fafc;
+          }
+          .tax-row .form-input {
+            background-color: #f1f5f9;
           }
         `}
       </style>
