@@ -14,7 +14,32 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
 
   const toEnglishNumerals = (str: string): string => {
     const arabicNumerals = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-    return str.replace(/[٠-٩]/g, (d) => arabicNumerals.indexOf(d).toString());
+    return str.replace(/،/g, '').replace(/[٠-٩]/g, (d) => arabicNumerals.indexOf(d).toString());
+  };
+
+  // Helper function to format numbers with Arabic thousand separators and Arabic numerals
+  const formatNumberWithArabicThousands = (num: number | string | undefined | null): string => {
+    if (num === null || num === undefined || num === '') return '';
+    const stringValue = String(num).replace(/,/g, '').replace(/،/g, ''); // Remove any commas (English or Arabic)
+
+    // Check if the cleaned value is a valid number before formatting
+    if (isNaN(parseFloat(stringValue))) return String(num); // Return original if not a valid number for parsing
+
+    // Convert to English temporarily for standard number formatting
+    const englishValue = stringValue.replace(/[٠-٩]/g, (d) => 
+      String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+    );
+
+    const parts = englishValue.split('.');
+    const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '،'); // Use Arabic comma
+    const formattedNumber = parts.length > 1 ? `${integerPart}.${parts[1]}` : integerPart;
+    
+    // Convert the formatted number string (with Arabic commas and English decimal point) to Arabic numerals
+    const arabicFormattedNumber = formattedNumber.replace(/[0-9]/g, (d) =>
+       String(['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'][parseInt(d)])
+    ); // Arabic digits
+
+    return arabicFormattedNumber;
   };
 
   const formatDate = (dateString: string) => {
@@ -81,46 +106,37 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
         <table style={{ width: '100%', borderCollapse: 'collapse', border: 'none' }}>
           <tbody>
             {invoiceData.items.map((item, index) => {
-              // Convert Arabic numbers to English before calculations
-              const weightGrams = Number(toEnglishNumerals(item.weight.grams.toString()));
-              const weightMilligrams = Number(toEnglishNumerals(item.weight.milligrams?.toString() || '0'));
-              const pricePound = Number(toEnglishNumerals(item.price.pound.toString()));
-              const pricePiaster = item.price.piaster ? Number(toEnglishNumerals(item.price.piaster.toString())) : 0;
-              const karat = Number(toEnglishNumerals(item.karat.toString()));
-              
-              // Calculate total
-              const total = weightGrams * (pricePound + (pricePiaster / 100));
-
               return (
                 <tr key={index} style={{ height: '0.65cm' }}>
-                  {/* Total Value */}
+                  {/* Total Value (Displaying combined Value Pound and Value Piaster) */}
                   <td style={{ width: '2.0cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
-                    {toArabicNumerals(Math.floor(total))}
+                    {/* Format and display the combined value */} 
+                    {`${formatNumberWithArabicThousands(item.value.pound)}${item.value.piaster ? '.' + formatNumberWithArabicThousands(item.value.piaster) : ''}`}
                   </td>
                   
                   {/* Weight in Milligrams */}
                   <td style={{ width: '1.6cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
-                    {weightMilligrams > 0 ? toArabicNumerals(weightMilligrams) : '٠٠'}
+                    {formatNumberWithArabicThousands(item.weight.milligrams)}
                   </td>
 
                   {/* Weight in Grams */}
                   <td style={{ width: '1.6cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
-                    {toArabicNumerals(Math.floor(weightGrams))}
+                    {formatNumberWithArabicThousands(item.weight.grams)}
                   </td>
                   
                   {/* Karat */}
                   <td style={{ width: '1.8cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
-                    {toArabicNumerals(karat)}
+                    {formatNumberWithArabicThousands(item.karat)}
                   </td>
                   
                   {/* Price in Piasters */}
                   <td style={{ width: '1.2cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
-                    {pricePiaster ? toArabicNumerals(pricePiaster) : '٠٠'}
+                    {formatNumberWithArabicThousands(item.price.piaster)}
                   </td>
                   
                   {/* Price in Pounds */}
                   <td style={{ width: '1.6cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
-                    {toArabicNumerals(pricePound)}
+                    {formatNumberWithArabicThousands(item.price.pound)}
                   </td>
                   
                   {/* Description */}
