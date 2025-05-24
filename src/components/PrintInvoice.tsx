@@ -78,29 +78,29 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
       {/* Header Section */}
       <div style={{ position: 'absolute', top: '3.5cm', width: '16cm', height: '1.5cm' }}>
         {/* Date Fields */}
-        <div style={{ position: 'absolute', top: '0.4cm', right: '2cm', width: '1.5cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '2.5cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.day}
         </div>
-        <div style={{ position: 'absolute', top: '0.4cm', right: '4cm', width: '1.5cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '3.5cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.month}
         </div>
-        <div style={{ position: 'absolute', top: '0.4cm', right: '4.9cm', width: '1.5cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '5.1cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.year}
         </div>
         
         {/* Customer Name */}
-        <div style={{ position: 'absolute', top: '1.1cm', right: '2.2cm', width: '5.8cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.95cm', right: '3cm', width: '4.8cm', textAlign: 'center' }}>
           {invoiceData.customerName || '---'}
         </div>
         
         {/* Phone Number */}
-        <div style={{ position: 'absolute', top: '1.1cm', right: '11.5cm', width: '3cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.95cm', right: '9cm', width: '3cm', textAlign: 'center' }}>
           {invoiceData.mobileNumber || '---'}
         </div>
       </div>
       
       {/* Items Table */}
-      <div style={{ position: 'absolute', top: '7.5cm', width: '14.5cm', right: '0.75cm', height: '12cm', padding: '0' }}>
+      <div style={{ position: 'absolute', top: '7.3cm', width: '14.5cm', right: '0.85cm', height: '12cm', padding: '0' }}>
         {/*<div style={{ position: 'absolute', top: '5.3cm', width: '16cm' }}>*/}
         <table style={{ width: '100%', borderCollapse: 'collapse', border: 'none' }}>
           <tbody>
