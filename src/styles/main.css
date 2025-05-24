@@ -151,6 +151,7 @@
   transition: all 0.2s;
   font-size: 0.875rem;
   line-height: 1.25rem;
+  font-weight: 700;
   color: #1f2937;
   background-color: #ffffff;
 }
@@ -347,14 +348,16 @@
 }
 
 .items-count {
-  color: #6b7280;
+  color: #8a919e;
   font-size: 0.875rem;
+  font-weight: 700;
 }
 
 .items-limit-indicator {
   margin-right: 0.5rem;
   color: #ef4444;
   font-size: 0.875rem;
+  font-weight: 700;
 }
 
 /* Print Instructions Section */
@@ -437,7 +440,7 @@
 
 .header-hint {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: #5f646b;
   font-weight: normal;
 }
 

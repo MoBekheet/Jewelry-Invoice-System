@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Printer, Save, Trash2, Plus
 } from 'lucide-react';
-import InvoicePreview from './InvoicePreview';
+import InvoicePreview from './PrintInvoice';
 import Modal from './Modal';
 import Toast from './Toast';
 import { InvoiceData, InvoiceItem } from '../types/invoice';
@@ -293,6 +293,7 @@ function InvoiceForm() {
   };
 
   const handlePrint = () => {
+    saveInvoice(); // Save the invoice before printing
     setShowValidation(true);
     if (hasIncompleteRow || hasIncompleteHeader) {
       showToast(
@@ -646,7 +647,7 @@ function InvoiceForm() {
             className={`form-input${isFieldMissing(null, 'mobileNumber') ? ' input-error' : ''}`}
             placeholder="رقم الموبايل"
             inputMode="tel"
-            dir="ltr"
+            dir="rtl"
             style={{ height: '2.5rem' }}
           />
         </div>
@@ -846,12 +847,12 @@ function InvoiceForm() {
           >
             <Plus className="button-icon" size={16} />
             إضافة صنف
-            {invoiceData.items.length >= 13 && (
+          </button>
+          {invoiceData.items.length >= 13 && (
               <span className="items-limit-indicator">
                 (١٣/١٣)
               </span>
             )}
-          </button>
           {invoiceData.items.length < 13 && (
             <span className="items-count">
               ({toArabicNumerals(invoiceData.items.length.toString())}/١٣)
@@ -922,11 +923,6 @@ function InvoiceForm() {
             flex-direction: column;
             align-items: center;
             gap: 2px;
-          }
-          .header-hint {
-            font-size: 0.8em;
-            color: #9ca3af;
-            font-weight: normal;
           }
           .table-header-cell {
             padding: 8px;
