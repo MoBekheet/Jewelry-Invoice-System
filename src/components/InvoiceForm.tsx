@@ -380,7 +380,7 @@ function InvoiceForm() {
         * {
           background: none !important;
           color: black !important;
-              outline: 1px solid #e91f1fb0;
+              // outline: 1px solid #e91f1fb0;
         }
         html {
           height: 100%;
