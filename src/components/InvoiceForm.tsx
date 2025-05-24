@@ -439,7 +439,23 @@ function InvoiceForm() {
            );
   };
 
-  // Function to format input value for display with Arabic numerals and thousand separators
+  // Function to format number with thousand separators
+  const formatNumber = (value: string | number): string => {
+    if (!value) return '';
+    const stringValue = value.toString().replace(/,/g, '');
+    const parts = stringValue.split('.');
+    const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    const formattedNumber = parts.length > 1 ? `${integerPart}.${parts[1]}` : integerPart;
+    return toArabicNumerals(formattedNumber);
+  };
+
+  // Function to format display value (with decimal places)
+  const formatDisplayValue = (value: number): string => {
+    const formattedValue = value.toFixed(2);
+    return formatNumber(formattedValue);
+  };
+
+  // Function to format input value for display
   const formatInputValue = (value: string | number | undefined | null): string => {
     if (value === null || value === undefined || value === '') return '';
     const stringValue = String(value).replace(/,/g, '').replace(/،/g, ''); // Remove any commas (English or Arabic)
@@ -447,43 +463,22 @@ function InvoiceForm() {
     // Check if the cleaned value is a valid number before formatting
     if (isNaN(parseFloat(stringValue))) return String(value); // Return original if not a valid number for parsing
 
-    const parts = stringValue.split('.');
-    const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '،'); // Use Arabic comma for thousand separators
-    
-    // Combine integer and decimal parts, ensuring decimal part exists if present
-    const formattedNumber = parts.length > 1 ? `${integerPart}.${parts[1]}` : integerPart;
-    
-    // Convert the formatted number string (with Arabic commas and English decimal point) to Arabic numerals
-    const arabicFormattedNumber = formattedNumber.replace(/[0-9]/g, (d) =>
+    // Convert Arabic numerals to English temporarily for standard number formatting
+    const englishValue = stringValue.replace(/[٠-٩]/g, (d) =>
+      String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
+    );
+
+    // Format the number with English thousand separators first
+    const parts = englishValue.split('.');
+    const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Use English comma for internal formatting
+    const formattedEnglishNumber = parts.length > 1 ? `${integerPart}.${parts[1]}` : integerPart;
+
+    // Convert the formatted English number string (with English commas) back to Arabic numerals and replace English comma with Arabic comma
+    const arabicFormattedNumber = formattedEnglishNumber.replace(/[0-9]/g, (d) =>
        String(['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'][parseInt(d)])
-    ); // Arabic digits
+    ).replace(/,/g, '،'); // Replace English comma with Arabic comma
 
     return arabicFormattedNumber;
-  };
-
-  // Function to format number with thousand separators (used for Total)
-  const formatNumber = (value: string | number): string => {
-    if (!value) return '';
-    const stringValue = value.toString().replace(/,/g, '').replace(/،/g, ''); // Remove existing commas
-    
-    // Check if the cleaned value is a valid number before formatting
-    if (isNaN(parseFloat(stringValue))) return String(value); // Return original if not a valid number for parsing
-
-    const parts = stringValue.split('.');
-    const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '،'); // Use Arabic comma
-    const formattedNumber = parts.length > 1 ? `${integerPart}.${parts[1]}` : integerPart;
-    return toArabicNumerals(formattedNumber);
-  };
-
-  // Function to format display value (with decimal places) (used for Total)
-  const formatDisplayValue = (value: number): string => {
-    // Ensure value is a number before fixing to 2 decimal places
-    const numericValue = parseFloat(String(value).replace(/,/g, '').replace(/،/g, '').replace(/[٠-٩]/g, (d) => 
-      String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-    )) || 0;
-
-    const formattedValue = numericValue.toFixed(2);
-    return formatNumber(formattedValue);
   };
 
   // Function to handle numeric input change
@@ -515,29 +510,6 @@ function InvoiceForm() {
         } else if (field === 'karat') {
           newItem.karat = cleanEnglishValue;
         }
-
-        // Recalculate the value based on weight and price if these fields change
-        // Do NOT recalculate if value.pound or value.piaster are changed directly
-        if (field.startsWith('weight') || field.startsWith('price')) {
-             const weightGrams = parseFloat(newItem.weight.grams) || 0;
-             const weightMilligrams = parseFloat(newItem.weight.milligrams) || 0;
-             const totalWeight = weightGrams + (weightMilligrams / 1000);
-
-             const pricePound = parseFloat(newItem.price.pound) || 0;
-             const pricePiaster = parseFloat(newItem.price.piaster) || 0;
-             const totalPrice = pricePound + (pricePiaster / 100);
-
-             const totalValue = totalWeight * totalPrice;
-             const valuePound = Math.floor(totalValue);
-             const valuePiaster = Math.round((totalValue - valuePound) * 100);
-
-             // Update the calculated value fields in the state with English string format
-             newItem.value = {
-               pound: valuePound.toString(),
-               piaster: valuePiaster.toString().padStart(2, '0')
-             };
-        }
-        // Note: Karat change does not trigger value recalculation based on existing code structure
 
         return newItem;
       }
@@ -796,7 +768,7 @@ function InvoiceForm() {
                     className={`form-input${isFieldMissing(item, 'value.pound') ? ' input-error' : ''}`}
                     placeholder="القيمة"
                     inputMode="decimal"
-                    maxLength={15}
+                    maxLength={8}
                     onFocus={(e) => e.target.select()}
                   />
                 </td>
