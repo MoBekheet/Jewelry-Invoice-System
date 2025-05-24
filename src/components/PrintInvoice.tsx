@@ -78,10 +78,10 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
       {/* Header Section */}
       <div style={{ position: 'absolute', top: '3.5cm', width: '16cm', height: '1.5cm' }}>
         {/* Date Fields */}
-        <div style={{ position: 'absolute', top: '0.4cm', right: '2.5cm', width: '1cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '2.4cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.day}
         </div>
-        <div style={{ position: 'absolute', top: '0.4cm', right: '3.5cm', width: '1cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '3.75cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.month}
         </div>
         <div style={{ position: 'absolute', top: '0.4cm', right: '5.1cm', width: '1cm', textAlign: 'center' }}>
@@ -89,12 +89,12 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
         </div>
         
         {/* Customer Name */}
-        <div style={{ position: 'absolute', top: '0.95cm', right: '3cm', width: '4.8cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '1cm', right: '3cm', width: '4.8cm', textAlign: 'center' }}>
           {invoiceData.customerName || '---'}
         </div>
         
         {/* Phone Number */}
-        <div style={{ position: 'absolute', top: '0.95cm', right: '9cm', width: '3cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '1cm', right: '9.4cm', width: '3cm', textAlign: 'center' }}>
           {invoiceData.mobileNumber || '---'}
         </div>
       </div>
@@ -168,7 +168,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
             })}
 
             {/* Empty Rows */}
-            {Array(18 - invoiceData.items.length).fill(0).map((_, index) => (
+            {Array(12 - invoiceData.items.length).fill(0).map((_, index) => (
               <tr key={`empty-${index}`} style={{ height: '0.65cm' }}>
                 <td style={{ width: '2.3cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
                 <td style={{ width: '1.1cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
