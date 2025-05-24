@@ -110,8 +110,9 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
                 <tr key={index} style={{ height: '0.65cm' }}>
                   {/* Total Value (Displaying combined Value Pound and Value Piaster) */}
                   <td style={{ width: '2.0cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
-                    {/* Format and display the combined value */} 
-                    {`${formatNumberWithArabicThousands(item.value.pound)}${item.value.piaster ? '.' + formatNumberWithArabicThousands(item.value.piaster) : ''}`}
+                    {/* Format and display the combined value */}
+                    {/* Check if piaster value is non-zero before appending decimal part */}
+                    {`${formatNumberWithArabicThousands(item.value.pound)}${item.value.piaster && parseFloat(toEnglishNumerals(item.value.piaster)) > 0 ? '.' + formatNumberWithArabicThousands(item.value.piaster) : ''}`}
                   </td>
                   
                   {/* Weight in Milligrams */}
