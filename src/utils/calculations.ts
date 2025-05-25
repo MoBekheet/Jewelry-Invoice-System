@@ -1,4 +1,4 @@
-import { InvoiceItem } from '../types/invoice';
+import {InvoiceItem} from '../types/invoice';
 
 /**
  * Calculate the total for a single invoice row
@@ -15,14 +15,12 @@ export const calculateRowTotal = (item: InvoiceItem): number => {
  * Calculate the total for the entire invoice
  */
 export const calculateInvoiceTotal = (items: InvoiceItem[]): number => {
-  const total = items.reduce((sum, item) => {
+  return items.reduce((sum, item) => {
     // Use the updated calculateRowTotal to get the item's value including piasters
     const itemValue = calculateRowTotal(item);
     // Remove any thousand separators and convert to English numerals before parsing tax amount
-    const taxAmount = item.hasTax ? (parseFloat(item.tax.amount.replace(/,/g, '').replace(/،/g, '')) || 0) : 0;
-    return sum + itemValue + taxAmount;
+    return sum + itemValue;
   }, 0);
-  return total;
 };
 
 /**
