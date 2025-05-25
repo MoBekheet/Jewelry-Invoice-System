@@ -78,7 +78,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
       {/* Header Section */}
       <div style={{ position: 'absolute', top: '3.5cm', width: '16cm', height: '1.5cm' }}>
         {/* Date Fields */}
-        <div style={{ position: 'absolute', top: '0.4cm', right: '2.4cm', width: '1cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '2.2cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.day}
         </div>
         <div style={{ position: 'absolute', top: '0.4cm', right: '3.75cm', width: '1cm', textAlign: 'center' }}>
@@ -89,12 +89,12 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
         </div>
         
         {/* Customer Name */}
-        <div style={{ position: 'absolute', top: '1cm', right: '3cm', width: '4.8cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '1.1cm', right: '3cm', width: '4.8cm', textAlign: 'center' }}>
           {invoiceData.customerName || '---'}
         </div>
         
         {/* Phone Number */}
-        <div style={{ position: 'absolute', top: '1cm', right: '9.4cm', width: '3cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '1.1cm', right: '9.6cm', width: '3cm', textAlign: 'center' }}>
           {invoiceData.mobileNumber || '---'}
         </div>
       </div>
@@ -184,7 +184,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
       </div>
 
       {/* Seller Name */}
-      <div style={{ position: 'absolute', bottom: '1cm', left: '1cm', width: '4.8cm', textAlign: 'center' }}>
+      <div style={{ position: 'absolute', bottom: '3.2cm', left: '1cm', width: '4.8cm', textAlign: 'center' }}>
         {invoiceData.sellerName || '---'}
       </div>
     </div>
