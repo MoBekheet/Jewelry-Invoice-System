@@ -183,6 +183,11 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
         </table>
       </div>
 
+      {/* Total Amount */}
+      <div style={{ position: 'absolute', bottom: '4.2cm', left: '1cm', width: '4.8cm', textAlign: 'center' }}>
+        {formatNumberWithArabicThousands(invoiceData.totalAmount)} ج.م
+      </div>
+
       {/* Seller Name */}
       <div style={{ position: 'absolute', bottom: '3.2cm', left: '1cm', width: '4.8cm', textAlign: 'center' }}>
         {invoiceData.sellerName || '---'}
