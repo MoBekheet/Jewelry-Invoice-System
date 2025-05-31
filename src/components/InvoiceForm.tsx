@@ -353,7 +353,7 @@ function InvoiceForm() {
     style.innerHTML = `
       @media print {
         @page {
-          size: 160mm 200mm;
+          size: 148mm 210mm;
           margin: 0;
         }
         body { 
@@ -370,18 +370,20 @@ function InvoiceForm() {
           position: absolute;
           left: 0;
           top: 0;
-          width: 160mm;
-          height: 200mm;
+          width: 148mm;
+          height: 210mm;
           overflow: hidden;
           page-break-after: avoid !important;
           page-break-before: avoid !important;
           page-break-inside: avoid !important;
-          background: none !important;
+          background: white !important;
         }
         * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
           background: none !important;
           color: black !important;
-              // outline: 1px solid #e91f1fb0;
+          outline: 1px solid #e91f1fb0;
         }
         html {
           height: 100%;

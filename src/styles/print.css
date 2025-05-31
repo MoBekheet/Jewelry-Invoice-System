@@ -1,7 +1,7 @@
 /* Print-specific styles */
 @media print {
   @page {
-    size: 160mm 200mm;
+    size: 148mm 210mm; /* A5 size */
     margin: 0;
   }
 
@@ -11,6 +11,8 @@
     height: 100%;
     width: 100%;
     overflow: hidden;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   .print-content {
@@ -18,12 +20,13 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 160mm;
-    height: 200mm;
+    width: 148mm;
+    height: 210mm;
     overflow: hidden;
     page-break-after: avoid !important;
     page-break-before: avoid !important;
     page-break-inside: avoid !important;
+    background: white !important;
   }
 
   * {
@@ -31,6 +34,23 @@
     print-color-adjust: exact !important;
     background: none !important;
     color: black !important;
+  }
+
+  html {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  @page :first {
+    margin: 0;
+  }
+
+  @page :left {
+    margin: 0;
+  }
+
+  @page :right {
+    margin: 0;
   }
 }
 
@@ -122,9 +142,10 @@
 
 /* Print preview container */
 .preview-container {
-  width: 160mm;
-  height: 200mm;
+  width: 148mm;
+  height: 210mm;
   position: relative;
   margin: 0 auto;
   background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
