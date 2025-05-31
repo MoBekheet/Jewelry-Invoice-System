@@ -357,6 +357,7 @@ function InvoiceForm() {
           margin: 0;
         }
         body { 
+          outline: 1px solid #e91f1fb0;
           margin: 0; 
           padding: 0;
           height: 100%;

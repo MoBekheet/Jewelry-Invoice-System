@@ -64,10 +64,9 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
 
   return (
     <div id="print-area" dir="rtl" style={{ 
-      width: '148mm',
-      height: '210mm',
+      width: '14cm',
+      height: '19.8cm',
       position: 'relative', 
-      margin: '0 auto', 
       padding: 0, 
       fontFamily: 'NotoKufiArabic, sans-serif',
       fontWeight: 700,
@@ -76,88 +75,88 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
     }}>
       
       {/* Header Section */}
-      <div style={{ position: 'absolute', top: '35mm', width: '148mm', height: '15mm' }}>
+      <div style={{ position: 'absolute', top: '3.5cm', width: '14.8cm', height: '1.5cm' }}>
         {/* Date Fields */}
-        <div style={{ position: 'absolute', top: '4mm', right: '22mm', width: '10mm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '2.2cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.day}
         </div>
-        <div style={{ position: 'absolute', top: '4mm', right: '37.5mm', width: '10mm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '3.75cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.month}
         </div>
-        <div style={{ position: 'absolute', top: '4mm', right: '51mm', width: '10mm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '5.1cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.year}
         </div>
         
         {/* Customer Name */}
-        <div style={{ position: 'absolute', top: '11mm', right: '30mm', width: '48mm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '1.1cm', right: '3cm', width: '4.8cm', textAlign: 'center' }}>
           {invoiceData.customerName || '---'}
         </div>
         
         {/* Phone Number */}
-        <div style={{ position: 'absolute', top: '11mm', right: '96mm', width: '30mm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '1.1cm', right: '9.6cm', width: '3cm', textAlign: 'center' }}>
           {invoiceData.mobileNumber || '---'}
         </div>
       </div>
       
       {/* Items Table */}
-      <div style={{ position: 'absolute', top: '73mm', width: '145mm', right: '8.5mm', height: '120mm', padding: '0' }}>
+      <div style={{ position: 'absolute', top: '7.3cm', width: '12.5cm', right: '0.85cm', height: '12cm', padding: '0' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', border: 'none' }}>
           <tbody>
             {invoiceData.items.map((item, index) => {
               return (
                 <React.Fragment key={index}>
-                  <tr style={{ height: '6.5mm' }}>
+                  <tr style={{ height: '0.65cm' }}>
                     {/* Total Value */}
-                    <td style={{ width: '23mm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
+                    <td style={{ width: '2.3cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
                       {`${formatNumberWithArabicThousands(item.value.pound)}${item.value.piaster && parseFloat(toEnglishNumerals(item.value.piaster)) > 0 ? '.' + formatNumberWithArabicThousands(item.value.piaster) : ''}`}
                     </td>
                     
                     {/* Weight in Milligrams */}
-                    <td style={{ width: '11mm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
+                    <td style={{ width: '1.1cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
                       {formatNumberWithArabicThousands(item.weight.milligrams)}
                     </td>
 
                     {/* Weight in Grams */}
-                    <td style={{ width: '16mm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
+                    <td style={{ width: '1.6cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
                       {formatNumberWithArabicThousands(item.weight.grams)}
                     </td>
                     
                     {/* Karat */}
-                    <td style={{ width: '11mm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
+                    <td style={{ width: '1.1cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
                       {formatNumberWithArabicThousands(item.karat)}
                     </td>
                     
                     {/* Price in Piasters */}
-                    <td style={{ width: '11mm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
+                    <td style={{ width: '1.1cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
                       {formatNumberWithArabicThousands(item.price.piaster)}
                     </td>
                     
                     {/* Price in Pounds */}
-                    <td style={{ width: '15mm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
+                    <td style={{ width: '1.5cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
                       {formatNumberWithArabicThousands(item.price.pound)}
                     </td>
                     
                     {/* Description */}
-                    <td style={{ width: '50mm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
+                    <td style={{ width: '5cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
                       {item.description || ''}
                     </td>
                   </tr>
                   {item.hasTax && (
-                    <tr style={{ height: '6.5mm', backgroundColor: '#f8f8f8' }}>
-                      <td style={{ width: '23mm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>&nbsp;</td>
+                    <tr style={{ height: '0.65cm', backgroundColor: '#f8f8f8' }}>
+                      <td style={{ width: '2.3cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>&nbsp;</td>
                       <td colSpan={4} style={{ 
-                        width: '49mm', 
+                        width: '4.9cm', 
                         textAlign: 'end', 
                         fontSize: '14px', 
                         fontWeight: 700,
                         verticalAlign: 'middle',
                         wordWrap: 'break-word',
                         whiteSpace: 'normal',
-                        maxWidth: '49mm',
-                        padding: '0 1mm',
+                        maxWidth: '4.9cm',
+                        padding: '0 0.1cm',
                       }}>{item.taxNote}</td>
-                      <td style={{ width: '15mm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>{formatNumberWithArabicThousands(item.tax.amount)}</td>
-                      <td style={{ width: '50mm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>&nbsp;</td>
+                      <td style={{ width: '1.5cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>{formatNumberWithArabicThousands(item.tax.amount)}</td>
+                      <td style={{ width: '5cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>&nbsp;</td>
                     </tr>
                   )}
                 </React.Fragment>
@@ -166,14 +165,14 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
 
             {/* Empty Rows */}
             {Array(12 - invoiceData.items.length).fill(0).map((_, index) => (
-              <tr key={`empty-${index}`} style={{ height: '6.5mm' }}>
-                <td style={{ width: '23mm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
-                <td style={{ width: '11mm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
-                <td style={{ width: '16mm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
-                <td style={{ width: '11mm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
-                <td style={{ width: '11mm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
-                <td style={{ width: '15mm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
-                <td style={{ width: '50mm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
+              <tr key={`empty-${index}`} style={{ height: '0.65cm' }}>
+                <td style={{ width: '2.3cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
+                <td style={{ width: '1.1cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
+                <td style={{ width: '1.6cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
+                <td style={{ width: '1.1cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
+                <td style={{ width: '1.1cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
+                <td style={{ width: '1.5cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
+                <td style={{ width: '5cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
               </tr>
             ))}
           </tbody>
@@ -181,12 +180,12 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
       </div>
 
       {/* Total Amount */}
-      <div style={{ position: 'absolute', bottom: '32mm', right: '8.5mm', width: '23mm', textAlign: 'center' }}>
+      <div style={{ position: 'absolute', bottom: '3.2cm', right: '0.85cm', width: '2.3cm', textAlign: 'center' }}>
         {formatNumberWithArabicThousands(invoiceData.totalAmount)} ج.م
       </div>
 
       {/* Seller Name */}
-      <div style={{ position: 'absolute', bottom: '32mm', left: '10mm', width: '48mm', textAlign: 'center' }}>
+      <div style={{ position: 'absolute', bottom: '3.2cm', left: '1cm', width: '4.8cm', textAlign: 'center' }}>
         {invoiceData.sellerName || '---'}
       </div>
     </div>
