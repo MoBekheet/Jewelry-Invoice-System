@@ -64,8 +64,8 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
 
   return (
     <div id="print-area" dir="rtl" style={{ 
-      width: '14cm',
-      height: '19.8cm',
+      width: '14.1cm',
+      height: '20cm',
       position: 'relative', 
       padding: 0, 
       fontFamily: 'NotoKufiArabic, sans-serif',
@@ -75,7 +75,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
     }}>
       
       {/* Header Section */}
-      <div style={{ position: 'absolute', top: '3.5cm', width: '12.5cm', right: '0.85cm'}}>
+      <div style={{ position: 'absolute', top: '3.5cm', width: '11.5cm', right: '0.91cm'}}>
         {/* Date Fields */}
         <div style={{ position: 'absolute', top: '0.4cm', right: '1.35cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.day}
@@ -99,7 +99,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
       </div>
       
       {/* Items Table */}
-      <div style={{ position: 'absolute', top: '7.3cm', width: '12.5cm', right: '0.85cm', height: '12cm', padding: '0' }}>
+      <div style={{ position: 'absolute', top: '8.5cm', width: '11.5cm', right: '0.91cm', height: '8.5cm', padding: '0' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', border: 'none' }}>
           <tbody>
             {invoiceData.items.map((item, index) => {
