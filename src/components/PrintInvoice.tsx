@@ -75,15 +75,15 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
     }}>
       
       {/* Header Section */}
-      <div style={{ position: 'absolute', top: '3.5cm', width: '11.5cm', right: '0.91cm'}}>
+      <div style={{ position: 'absolute', top: '4.6cm', width: '12.5cm', right: '0.8cm'}}>
         {/* Date Fields */}
-        <div style={{ position: 'absolute', top: '0.4cm', right: '1.35cm', width: '1cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '1cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.day}
         </div>
-        <div style={{ position: 'absolute', top: '0.4cm', right: '2.9cm', width: '1cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '2.5cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.month}
         </div>
-        <div style={{ position: 'absolute', top: '0.4cm', right: '4.25cm', width: '1cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '3.9cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.year}
         </div>
         
@@ -93,13 +93,13 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
         </div>
         
         {/* Phone Number */}
-        <div style={{ position: 'absolute', top: '1.1cm', right: '8.75cm', width: '3cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '1.1cm', right: '9.75cm', width: '3cm', textAlign: 'center' }}>
           {invoiceData.mobileNumber || '---'}
         </div>
       </div>
       
       {/* Items Table */}
-      <div style={{ position: 'absolute', top: '8.5cm', width: '11.5cm', right: '0.91cm', height: '8.5cm', padding: '0' }}>
+      <div style={{ position: 'absolute', top: '7.85cm', width: '12.5cm', right: '0.8cm', height: '8.5cm', padding: '0' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', border: 'none' }}>
           <tbody>
             {invoiceData.items.map((item, index) => {
