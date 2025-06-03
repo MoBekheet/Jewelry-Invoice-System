@@ -80,7 +80,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
         <div style={{ position: 'absolute', top: '0.4cm', right: '1cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.day}
         </div>
-        <div style={{ position: 'absolute', top: '0.4cm', right: '2.5cm', width: '1cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '2.1cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.month}
         </div>
         <div style={{ position: 'absolute', top: '0.4cm', right: '3.9cm', width: '1cm', textAlign: 'center' }}>
@@ -88,18 +88,18 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
         </div>
         
         {/* Customer Name */}
-        <div style={{ position: 'absolute', top: '1.1cm', right: '2.15cm', width: '4.8cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.6', right: '2.15cm', width: '4.8cm', textAlign: 'center' }}>
           {invoiceData.customerName || '---'}
         </div>
         
         {/* Phone Number */}
-        <div style={{ position: 'absolute', top: '1.1cm', right: '9.75cm', width: '3cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.6cm', right: '9.75cm', width: '3cm', textAlign: 'center' }}>
           {invoiceData.mobileNumber || '---'}
         </div>
       </div>
       
       {/* Items Table */}
-      <div style={{ position: 'absolute', top: '7.85cm', width: '12.5cm', right: '0.8cm', height: '8.5cm', padding: '0' }}>
+      <div style={{ position: 'absolute', top: '7.87cm', width: '12.55cm', right: '0.75cm', height: '8.5cm', padding: '0' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', border: 'none' }}>
           <tbody>
             {invoiceData.items.map((item, index) => {
