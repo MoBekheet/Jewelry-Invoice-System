@@ -77,7 +77,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
       {/* Header Section */}
       <div style={{ position: 'absolute', top: '4.6cm', width: '12.5cm', right: '0.8cm'}}>
         {/* Date Fields */}
-        <div style={{ position: 'absolute', top: '0.4cm', right: '1cm', width: '1cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '1.1cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.day}
         </div>
         <div style={{ position: 'absolute', top: '0.4cm', right: '2.3cm', width: '1cm', textAlign: 'center' }}>
@@ -88,12 +88,12 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
         </div>
         
         {/* Customer Name */}
-        <div style={{ position: 'absolute', top: '1cm', right: '2.15cm', width: '4.8cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '9.9cm', right: '2.15cm', width: '4.8cm', textAlign: 'center' }}>
           {invoiceData.customerName || '---'}
         </div>
         
         {/* Phone Number */}
-        <div style={{ position: 'absolute', top: '1cm', right: '9.75cm', width: '3cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '9.9cm', right: '9.75cm', width: '3cm', textAlign: 'center' }}>
           {invoiceData.mobileNumber || '---'}
         </div>
       </div>
@@ -105,7 +105,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
             {invoiceData.items.map((item, index) => {
               return (
                 <React.Fragment key={index}>
-                  <tr style={{ height: '0.7cm' }}>
+                  <tr style={{ height: '0.75cm' }}>
                     {/* Total Value */}
                     <td style={{ width: '2.3cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
                       {`${formatNumberWithArabicThousands(item.value.pound)}${item.value.piaster && parseFloat(toEnglishNumerals(item.value.piaster)) > 0 ? '.' + formatNumberWithArabicThousands(item.value.piaster) : ''}`}
@@ -142,7 +142,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
                     </td>
                   </tr>
                   {item.hasTax && (
-                    <tr style={{ height: '0.65cm', backgroundColor: '#f8f8f8' }}>
+                    <tr style={{ height: '0.75cm', backgroundColor: '#f8f8f8' }}>
                       <td style={{ width: '2.3cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>&nbsp;</td>
                       <td colSpan={4} style={{ 
                         width: '4.9cm', 
@@ -165,7 +165,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
 
             {/* Empty Rows */}
             {Array(12 - invoiceData.items.length).fill(0).map((_, index) => (
-              <tr key={`empty-${index}`} style={{ height: '0.65cm' }}>
+              <tr key={`empty-${index}`} style={{ height: '0.75cm' }}>
                 <td style={{ width: '2.3cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
                 <td style={{ width: '1.1cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
                 <td style={{ width: '1.6cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
