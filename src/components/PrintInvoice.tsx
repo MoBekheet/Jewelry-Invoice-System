@@ -80,7 +80,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
         <div style={{ position: 'absolute', top: '0.4cm', right: '1cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.day}
         </div>
-        <div style={{ position: 'absolute', top: '0.4cm', right: '2.1cm', width: '1cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '2.3cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.month}
         </div>
         <div style={{ position: 'absolute', top: '0.4cm', right: '3.9cm', width: '1cm', textAlign: 'center' }}>
@@ -88,12 +88,12 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
         </div>
         
         {/* Customer Name */}
-        <div style={{ position: 'absolute', top: '0.6', right: '2.15cm', width: '4.8cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.8cm', right: '2.15cm', width: '4.8cm', textAlign: 'center' }}>
           {invoiceData.customerName || '---'}
         </div>
         
         {/* Phone Number */}
-        <div style={{ position: 'absolute', top: '0.6cm', right: '9.75cm', width: '3cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.8cm', right: '9.75cm', width: '3cm', textAlign: 'center' }}>
           {invoiceData.mobileNumber || '---'}
         </div>
       </div>
@@ -105,7 +105,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
             {invoiceData.items.map((item, index) => {
               return (
                 <React.Fragment key={index}>
-                  <tr style={{ height: '0.65cm' }}>
+                  <tr style={{ height: '0.7cm' }}>
                     {/* Total Value */}
                     <td style={{ width: '2.3cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
                       {`${formatNumberWithArabicThousands(item.value.pound)}${item.value.piaster && parseFloat(toEnglishNumerals(item.value.piaster)) > 0 ? '.' + formatNumberWithArabicThousands(item.value.piaster) : ''}`}
