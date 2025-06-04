@@ -83,7 +83,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
         <div style={{ position: 'absolute', top: '0.4cm', right: '2.3cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.month}
         </div>
-        <div style={{ position: 'absolute', top: '0.4cm', right: '3.6cm', width: '1cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '3.8cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.year}
         </div>
         
