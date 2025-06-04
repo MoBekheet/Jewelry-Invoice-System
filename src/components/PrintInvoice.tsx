@@ -83,17 +83,17 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
         <div style={{ position: 'absolute', top: '0.4cm', right: '2.3cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.month}
         </div>
-        <div style={{ position: 'absolute', top: '0.4cm', right: '3.9cm', width: '1cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '0.4cm', right: '3.6cm', width: '1cm', textAlign: 'center' }}>
           {dateParts.year}
         </div>
         
         {/* Customer Name */}
-        <div style={{ position: 'absolute', top: '0.8cm', right: '2.15cm', width: '4.8cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '1cm', right: '2.15cm', width: '4.8cm', textAlign: 'center' }}>
           {invoiceData.customerName || '---'}
         </div>
         
         {/* Phone Number */}
-        <div style={{ position: 'absolute', top: '0.8cm', right: '9.75cm', width: '3cm', textAlign: 'center' }}>
+        <div style={{ position: 'absolute', top: '1cm', right: '9.75cm', width: '3cm', textAlign: 'center' }}>
           {invoiceData.mobileNumber || '---'}
         </div>
       </div>
