@@ -105,7 +105,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
             {invoiceData.items.map((item, index) => {
               return (
                 <React.Fragment key={index}>
-                  <tr style={{ height: '0.75cm' }}>
+                  <tr style={{ height: '0.7cm' }}>
                     {/* Total Value */}
                     <td style={{ width: '2.3cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>
                       {`${formatNumberWithArabicThousands(item.value.pound)}${item.value.piaster && parseFloat(toEnglishNumerals(item.value.piaster)) > 0 ? '.' + formatNumberWithArabicThousands(item.value.piaster) : ''}`}
@@ -142,7 +142,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
                     </td>
                   </tr>
                   {item.hasTax && (
-                    <tr style={{ height: '0.75cm', backgroundColor: '#f8f8f8' }}>
+                    <tr style={{ height: '0.7cm', backgroundColor: '#f8f8f8' }}>
                       <td style={{ width: '2.3cm', textAlign: 'center', fontSize: '18px', fontWeight: 700, verticalAlign: 'middle' }}>&nbsp;</td>
                       <td colSpan={4} style={{ 
                         width: '4.9cm', 
@@ -165,7 +165,7 @@ const InvoicePreview: React.FC<InvoicePreviewProps> = ({ invoiceData }) => {
 
             {/* Empty Rows */}
             {Array(12 - invoiceData.items.length).fill(0).map((_, index) => (
-              <tr key={`empty-${index}`} style={{ height: '0.75cm' }}>
+              <tr key={`empty-${index}`} style={{ height: '0.7cm' }}>
                 <td style={{ width: '2.3cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
                 <td style={{ width: '1.1cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
                 <td style={{ width: '1.6cm', textAlign: 'center', verticalAlign: 'middle' }}>&nbsp;</td>
